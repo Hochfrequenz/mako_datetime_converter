@@ -22,7 +22,7 @@ Then you need a conversion logic for your date times.
 This library does the conversion for you.
 
 This library does _not_ convert date times to/from UTC.
-It expects your application to work with `DateTimeKind.Utc` only, because everything else is doomed to failed and fixing your timezone problems is out of scope for this library.
+It expects your application to work with `DateTimeKind.Utc` only, because everything else is doomed to fail and fixing your timezone problems is out of scope for this library.
 
 ## How to use this Library
 
