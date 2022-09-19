@@ -18,9 +18,28 @@ Now imagine there is an interface between two systems:
 - one of your systems obeys all of the above rules
 - but another one works differently (e.g. models end dates inclusively or is unaware of the differences between electricity and gas)
 
-Then you need a conversion logic for your date times. This library does the conversion for you.
+Then you need a conversion logic for your date times.
+This library does the conversion for you.
 
 This library does _not_ convert date times to/from UTC.
 It expects your application to work with `DateTimeKind.Utc` only, because everything else is doomed to failed and fixing your timezone problems is out of scope for this library.
 
 ## How to use this Library
+
+_add mwe here_
+
+## Nuget Packages
+
+This repository is available as nuget package:
+
+- `MaKoDateTimeConverter` for the core time slice functionalities
+  - ![Nuget Package](https://badgen.net/nuget/v/MaKoDateTimeConverter)
+  - ![Nuget Prerelease](https://badgen.net/nuget/v/MaKoDateTimeConverter/pre)
+
+## Release Workflow
+
+To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release.
+This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
+
+To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release.
+This will create and push nuget packages with the specified version `x.y.z`.
