@@ -274,4 +274,31 @@ public class MaKoDateTimeConverterTests
         var invertedConfig = conversion.GetInverted();
         MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
+
+    [TestCase("2022-01-01T00:00:00Z", "2022-01-01T00:00:00Z")]
+    public void Test_Identity(string dateTimeString, string expectedResultString)
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                IsGas = false
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                IsGas = false,
+            },
+        };
+        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+    }
 }

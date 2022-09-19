@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using NUnit.Framework;
 using MaKoDateTimeConverter;
@@ -28,6 +29,13 @@ namespace MaKoDateTimeConverterTests
             var dateTimeConfig = System.Text.Json.JsonSerializer.Deserialize<DateTimeConversionConfiguration>(dateTimeConfigJson);
             dateTimeConfig.Should().NotBeNull(because: "the deserialization has to work")
                 .And.Subject.As<DateTimeConversionConfiguration>().IsValid.Should().Be(isValid);
+
+            if (!isValid)
+            {
+                var arbitraryDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                var convertAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(arbitraryDate, dateTimeConfig);
+                convertAction.Should().Throw<ArgumentException>();
+            }
         }
     }
 }
