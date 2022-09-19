@@ -28,7 +28,7 @@ jobs:
         run: dotnet test --configuration Release
       - name: Create Package TimeSlice (dotnet pack)
         working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
-        run: dotnet pack TimeSlice.csproj --configuration Release -p:PackageVersion="${{ steps.tagMaKoDateTimeConverter.outputs.tag }}"
+        run: dotnet pack MaKoDateTimeConverter.csproj --configuration Release -p:PackageVersion="${{ steps.tagMaKoDateTimeConverter.outputs.tag }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
       - name: Nuget push MaKoDateTimeConverter
