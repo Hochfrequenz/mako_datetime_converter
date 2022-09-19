@@ -111,6 +111,22 @@ public class MaKoDateTimeConverterTests
         MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(dt).Should().Be(expected);
     }
 
+    [Test]
+    public void Test_AddGermanDay_ArgumentException_Utc()
+    {
+        var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
+        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.AddGermanDay(localDt);
+        checkAction.Should().Throw<ArgumentException>();
+    }
+
+    [Test]
+    public void Test_SubtractGermanDay_ArgumentException_Utc()
+    {
+        var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
+        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.SubtractGermanDay(localDt);
+        checkAction.Should().Throw<ArgumentException>();
+    }
+
     [TestCase("2023-06-01T04:00:00Z", "2023-05-31T22:00:00Z")]
     [TestCase("2023-12-01T05:00:00Z", "2023-11-30T23:00:00Z")]
     public void Test_GasTagAware_To_NonGasTagAware(string dateTimeString, string expectedResultString)
@@ -134,6 +150,9 @@ public class MaKoDateTimeConverterTests
         };
         var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
         actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-31T22:00:00Z", "2023-06-01T04:00:00Z")]
@@ -159,6 +178,9 @@ public class MaKoDateTimeConverterTests
         };
         var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
         actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T22:00:00Z", "2023-05-31T22:00:00Z")]
@@ -186,6 +208,9 @@ public class MaKoDateTimeConverterTests
         };
         var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
         actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T04:00:00Z", "2023-05-31T04:00:00Z")]
@@ -214,6 +239,9 @@ public class MaKoDateTimeConverterTests
         };
         var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
         actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T22:00:00Z", "2023-06-01T04:00:00Z")]
@@ -242,5 +270,8 @@ public class MaKoDateTimeConverterTests
         };
         var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
         actual.Should().Be(expected);
+
+        var invertedConfig = conversion.GetInverted();
+        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
     }
 }
