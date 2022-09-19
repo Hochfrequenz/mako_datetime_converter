@@ -137,6 +137,26 @@ public static class MaKoDateTimeConverter
     }
 
     /// <summary>
+    /// remove all hours, minutes, seconds, milliseconds (in german local time) from the given <paramref name="dt"/>.
+    /// This is similar to a "round down" or "floor" in German local time.
+    /// </summary>
+    public static DateTime StripTime(this DateTime dt)
+    {
+        if (dt.Kind != DateTimeKind.Utc)
+        {
+            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+        }
+        var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
+        var result = new DateTime(germanTime.Year, germanTime.Month, germanTime.Day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+        return TimeZoneInfo.ConvertTimeToUtc(result, BerlinTime);
+    }
+
+    /// <summary>
+    /// <inheritdoc cref="StripTime(System.DateTime)"/>
+    /// </summary>
+    public static DateTimeOffset StripTime(this DateTimeOffset dto) => new(dto.UtcDateTime.StripTime());
+
+    /// <summary>
     /// check if this is the begin of a German Gastag
     /// </summary>
     /// <param name="dt"></param>
@@ -180,6 +200,11 @@ public static class MaKoDateTimeConverter
         }
 
         DateTimeOffset result = sourceDateTime;
+        if (conversionConfiguration.Source.StripTime)
+        {
+            result = result.StripTime();
+        }
+
         if (conversionConfiguration.Source == conversionConfiguration.Target)
         {
             // both are the same, no conversion needed
@@ -192,7 +217,7 @@ public static class MaKoDateTimeConverter
             if (conversionConfiguration.Source.IsGasTagAware!.Value && !conversionConfiguration.Target.IsGasTagAware!.Value)
             {
                 // convert from gas-tag to non-gas-tag
-                if (IsGerman6Am(sourceDateTime))
+                if (IsGerman6Am(result))
                 {
                     result = Convert6AamToMidnight(result.UtcDateTime);
                 }
@@ -200,7 +225,7 @@ public static class MaKoDateTimeConverter
             if (!conversionConfiguration.Source.IsGasTagAware!.Value && conversionConfiguration.Target.IsGasTagAware!.Value)
             {
                 // convert from non-gastag to gas-tag
-                if (IsGermanMidnight(sourceDateTime))
+                if (IsGermanMidnight(result))
                 {
                     result = ConvertMidnightTo6Am(result.UtcDateTime);
                 }
@@ -225,6 +250,11 @@ public static class MaKoDateTimeConverter
                 // convert from exclusive to inclusive
                 result = SubtractGermanDay(result.UtcDateTime);
             }
+        }
+
+        if (conversionConfiguration.Target.StripTime)
+        {
+            result = result.StripTime();
         }
 
         return result.UtcDateTime;

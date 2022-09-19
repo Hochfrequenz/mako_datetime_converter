@@ -120,6 +120,28 @@ public class MaKoDateTimeConverterTests
     }
 
     [Test]
+    [TestCase("2022-12-31T23:00:00Z", "2022-12-31T23:00:00Z")]
+    [TestCase("2022-12-31T23:00:01Z", "2022-12-31T23:00:00Z")]
+    [TestCase("2022-12-31T23:34:01Z", "2022-12-31T23:00:00Z")]
+    [TestCase("2023-01-01T12:00:00Z", "2022-12-31T23:00:00Z")]
+    public void Test_StripTime(string dateTimeString, string expectedResultString)
+    {
+        var dto = DateTimeOffset.Parse(dateTimeString);
+        var dt = dto.UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString);
+        dt.StripTime().Should().Be(expected.UtcDateTime);
+        dto.StripTime().Should().Be(expected);
+    }
+
+    [Test]
+    public void Test_StripTime_ArgumentException()
+    {
+        var localDt = new DateTime(2022, 1, 1, 12, 0, 0, DateTimeKind.Local);
+        var checkAction = () => localDt.StripTime();
+        checkAction.Should().Throw<ArgumentException>();
+    }
+
+    [Test]
     public void Test_AddGermanDay_ArgumentException_Utc()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
@@ -308,5 +330,43 @@ public class MaKoDateTimeConverterTests
 
         var invertedConfig = conversion.GetInverted();
         expected.Convert(invertedConfig).Should().Be(dt);
+    }
+
+    [Test]
+    [TestCase("2022-01-01T00:00:00Z", "2021-12-31T23:00:00Z")]
+    [TestCase("2022-01-01T12:45:56Z", "2021-12-31T23:00:00Z")]
+    public void Test_Stripping_Time_Source(string dateTimeString, string expectedResultString)
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                StripTime = true // <-- this is what is actually tested here
+            },
+            Target = new DateTimeConfiguration(),
+        };
+        var actual = dt.Convert(conversion);
+        actual.Should().Be(expected);
+    }
+
+    [Test]
+    [TestCase("2022-01-01T00:00:00Z", "2021-12-31T23:00:00Z")]
+    [TestCase("2022-01-01T12:45:56Z", "2021-12-31T23:00:00Z")]
+    public void Test_Stripping_Time_Target(string dateTimeString, string expectedResultString)
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration(),
+            Target = new DateTimeConfiguration
+            {
+                StripTime = true // <-- this is what is actually tested here
+            },
+        };
+        var actual = dt.Convert(conversion);
+        actual.Should().Be(expected);
     }
 }

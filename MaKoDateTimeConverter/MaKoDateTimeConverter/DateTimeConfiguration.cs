@@ -34,6 +34,15 @@ public record DateTimeConfiguration
     [System.Text.Json.Serialization.JsonPropertyName("isGasTagAware")]
     public bool? IsGasTagAware { get; set; }
 
+
+    /// <summary>
+    /// Set true to remove all hours, minutes, seconds, milliseconds from the respective DateTime.
+    /// If set in the <see cref="DateTimeConversionConfiguration.Source"/> the hours, minutes... will be stripped _before_ the conversion.
+    /// If set in the <see cref="DateTimeConversionConfiguration.Target"/> the hours, minutes... will be stripped _after_ the conversion.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("stripTime")]
+    public bool StripTime { get; set; }
+
     /// <summary>
     /// true iff the configuration is valid (self-consistent).
     /// </summary>
