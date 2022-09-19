@@ -26,7 +26,7 @@ It expects your application to work with `DateTimeKind.Utc` only, because everyt
 
 ## How to use this Library
 
-_add mwe here_
+See the [minimal working example](MaKoDateTimeConverter/MaKoDateTimeConverterTests/MinimalWorkingExample.cs).
 
 ## Nuget Packages
 
@@ -35,6 +35,11 @@ This repository is available as nuget package:
 - `MaKoDateTimeConverter` for the core time slice functionalities
   - ![Nuget Package](https://badgen.net/nuget/v/MaKoDateTimeConverter)
   - ![Nuget Prerelease](https://badgen.net/nuget/v/MaKoDateTimeConverter/pre)
+
+## Code Quality / Production Readiness
+
+- The code has [a 100%](https://github.com/Hochfrequenz/mako_datetime_converter/blob/main/.github/workflows/unittests_and_coverage.yml#L34) unit test coverage. ✔️
+- The package has no dependencies itself. ✔️
 
 ## Release Workflow
 

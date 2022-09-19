@@ -14,9 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference
-      Include="..\MaKoDateTimeConverter\MaKoDateTimeConverter.csproj"
-    />
+        <ProjectReference Include="..\MaKoDateTimeConverter\MaKoDateTimeConverter.csproj" />
     </ItemGroup>
 
 </Project>

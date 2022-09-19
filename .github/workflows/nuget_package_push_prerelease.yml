@@ -22,30 +22,22 @@ jobs:
         with:
           dotnet-version: 6.0.102
       - uses: olegtarasov/get-tag@v2.1
-        id: tagTimeslice
+        id: tagMaKoDateTimeConverter
         with:
           tagRegex: "prerelease-v(\\d+\\.\\d+\\.\\d+)"
       - name: Build/Check for compile errors (dotnet build)
-        working-directory: "TimeSliceNet"
+        working-directory: "MaKoDateTimeConverter"
         run: dotnet build --configuration Release
       - name: Run Unit Tests (dotnet test)
-        working-directory: "TimeSliceNet"
+        working-directory: "MaKoDateTimeConverter"
         run: dotnet test --configuration Release
       - name: Create Package TimeSlice (dotnet pack)
-        working-directory: "TimeSliceNet/TimeSlice"
-        run: dotnet pack TimeSlice.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}-beta${{ steps.current-time.outputs.formattedTime }}"
-      - name: Create Package TimeSliceEntityFrameWorkExtensions (dotnet pack)
-        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
-        run: dotnet pack TimeSliceEntityFrameWorkExtensions.csproj --configuration Release -p:PackageVersion="${{ steps.tagTimeslice.outputs.tag }}-beta${{ steps.current-time.outputs.formattedTime }}"
+        working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
+        run: dotnet pack MaKoDateTimeConverter.csproj --configuration Release -p:PackageVersion="${{ steps.tagMaKoDateTimeConverter.outputs.tag }}-beta${{ steps.current-time.outputs.formattedTime }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
-      - name: Nuget push TimeSlice
-        working-directory: "TimeSliceNet/TimeSlice"
+      - name: Nuget push MaKoDateTimeConverter
+        working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
         run: |
-          nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
-          nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
-      - name: Nuget push TimeSliceEntityFrameWorkExtensions
-        working-directory: "TimeSliceNet/TimeSliceEntityFrameWorkExtensions"
-        run: |
-          nuget setApiKey ${{ secrets.TIMESLICE_NUGET_ORG_PUSH_TOKEN }}
+          nuget setApiKey ${{ secrets.NUGET_ORG_PUSH_TOKEN }}
           nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
