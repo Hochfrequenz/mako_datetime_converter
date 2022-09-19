@@ -150,7 +150,7 @@ public static class MaKoDateTimeConverter
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         return germanTime.Hour == 6 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
     }
-    
+
     /// <summary>
     /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
     /// </summary>
@@ -160,7 +160,7 @@ public static class MaKoDateTimeConverter
     /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
     /// </summary>
     public static bool IsGerman6Am(this DateTimeOffset dto) => dto.UtcDateTime.IsGerman6Am();
-    
+
     /// <summary>
     /// <inheritdoc cref="IsGerman6Am(System.DateTimeOffset)"/>
     /// </summary>
