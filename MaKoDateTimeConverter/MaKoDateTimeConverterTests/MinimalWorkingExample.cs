@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using MaKoDateTimeConverter;
+using MaKoDateTimeConverter; // this imports the .Convert(...) extension method of DateTime
 using NUnit.Framework;
 
 namespace MaKoDateTimeConverterTests;
@@ -17,7 +17,7 @@ public class MinimalWorkingExample
         // this library assumes that you already have a utc-datetime available
 
         // this is e.g. the end date of a gas supply contract that ends at the end of 2022 
-        var myDateTimeFromEdifact = new DateTime(2023, 1, 1, 5, 0, 0, DateTimeKind.Utc); // end of the last Gas-Tag in 2022
+        var myDateTimeOffsetFromEdifact = new DateTimeOffset(2023, 1, 1, 5, 0, 0, TimeSpan.Zero); // end of the last Gas-Tag in 2022
 
         // now we want to hand this date over to a system that doesn't know of the gas quirks and handles end date inclusively
         var config = new DateTimeConversionConfiguration
@@ -39,8 +39,9 @@ public class MinimalWorkingExample
                 IsGasTagAware = false
             },
         };
-        var converted = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(myDateTimeFromEdifact, config);
+        var convertedDto = myDateTimeOffsetFromEdifact.Convert(config);
         // now the converted date is unaware of the Gas-Tag and meant inclusively
-        converted.Should().Be(new DateTime(2022, 12, 30, 23, 0, 0, DateTimeKind.Utc));
+        var expected = new DateTimeOffset(2022, 12, 30, 23, 0, 0, TimeSpan.Zero);
+        convertedDto.Should().Be(expected);
     }
 }

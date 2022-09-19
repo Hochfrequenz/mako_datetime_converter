@@ -33,7 +33,7 @@ namespace MaKoDateTimeConverterTests
             if (!isValid)
             {
                 var arbitraryDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                var convertAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(arbitraryDate, dateTimeConfig);
+                var convertAction = () => arbitraryDate.Convert(dateTimeConfig);
                 convertAction.Should().Throw<ArgumentException>();
             }
         }
