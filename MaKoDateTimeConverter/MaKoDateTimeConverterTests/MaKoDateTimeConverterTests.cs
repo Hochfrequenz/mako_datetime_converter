@@ -148,11 +148,11 @@ public class MaKoDateTimeConverterTests
                 IsGasTagAware = false
             }
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-31T22:00:00Z", "2023-06-01T04:00:00Z")]
@@ -176,11 +176,11 @@ public class MaKoDateTimeConverterTests
                 IsGasTagAware = true
             },
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T22:00:00Z", "2023-05-31T22:00:00Z")]
@@ -206,11 +206,11 @@ public class MaKoDateTimeConverterTests
                 IsGas = false,
             },
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T04:00:00Z", "2023-05-31T04:00:00Z")]
@@ -237,11 +237,11 @@ public class MaKoDateTimeConverterTests
                 IsGasTagAware = true
             },
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2023-05-30T22:00:00Z", "2023-06-01T04:00:00Z")]
@@ -268,11 +268,11 @@ public class MaKoDateTimeConverterTests
                 IsGasTagAware = true
             },
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 
     [TestCase("2022-01-01T00:00:00Z", "2022-01-01T00:00:00Z")]
@@ -295,10 +295,10 @@ public class MaKoDateTimeConverterTests
                 IsGas = false,
             },
         };
-        var actual = MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(dt, conversion);
+        var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
 
         var invertedConfig = conversion.GetInverted();
-        MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(expected, invertedConfig).Should().Be(dt);
+        expected.Convert(invertedConfig).Should().Be(dt);
     }
 }

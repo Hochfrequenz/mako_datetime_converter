@@ -141,7 +141,7 @@ public static class MaKoDateTimeConverter
     /// <param name="sourceDateTime">the source date time (input value of the conversion)</param>
     /// <param name="conversionConfiguration">describes the steps necessary to convert the given <paramref name="sourceDateTime"/></param>
     /// <returns></returns>
-    public static DateTimeOffset Convert(DateTimeOffset sourceDateTime, DateTimeConversionConfiguration conversionConfiguration)
+    public static DateTime Convert(this DateTime sourceDateTime, DateTimeConversionConfiguration conversionConfiguration)
     {
         if (!conversionConfiguration.IsValid)
         {
@@ -152,7 +152,7 @@ public static class MaKoDateTimeConverter
         if (conversionConfiguration.Source == conversionConfiguration.Target)
         {
             // both are the same, no conversion needed
-            return result;
+            return result.UtcDateTime;
         }
 
         if (conversionConfiguration.Source.IsGas) // this implies that the target is also gas, because otherwise the configuration would be invalid
@@ -161,7 +161,7 @@ public static class MaKoDateTimeConverter
             if (conversionConfiguration.Source.IsGasTagAware!.Value && !conversionConfiguration.Target.IsGasTagAware!.Value)
             {
                 // convert from gas-tag to non-gas-tag
-                if (IsGerman6Am(sourceDateTime.UtcDateTime))
+                if (IsGerman6Am(sourceDateTime))
                 {
                     result = Convert6AamToMidnight(result.UtcDateTime);
                 }
@@ -169,7 +169,7 @@ public static class MaKoDateTimeConverter
             if (!conversionConfiguration.Source.IsGasTagAware!.Value && conversionConfiguration.Target.IsGasTagAware!.Value)
             {
                 // convert from non-gastag to gas-tag
-                if (IsGermanMidnight(sourceDateTime.UtcDateTime))
+                if (IsGermanMidnight(sourceDateTime))
                 {
                     result = ConvertMidnightTo6Am(result.UtcDateTime);
                 }
@@ -198,4 +198,13 @@ public static class MaKoDateTimeConverter
 
         return result.UtcDateTime;
     }
+
+    /// <summary>
+    /// <inheritdoc cref="System.Convert"/>
+    /// </summary>
+    /// <param name="sourceDateTime"></param>
+    /// <param name="conversionConfiguration"></param>
+    /// <returns></returns>
+    public static DateTimeOffset Convert(this DateTimeOffset sourceDateTime, DateTimeConversionConfiguration conversionConfiguration) =>
+        sourceDateTime.UtcDateTime.Convert(conversionConfiguration);
 }
