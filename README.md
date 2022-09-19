@@ -32,7 +32,7 @@ See the [minimal working example](MaKoDateTimeConverter/MaKoDateTimeConverterTes
 
 This repository is available as nuget package:
 
-- `MaKoDateTimeConverter` for the core time slice functionalities
+- [`MaKoDateTimeConverter`](https://www.nuget.org/packages/MaKoDateTimeConverter/) for the core functionalities
   - ![Nuget Package](https://badgen.net/nuget/v/MaKoDateTimeConverter)
   - ![Nuget Prerelease](https://badgen.net/nuget/v/MaKoDateTimeConverter/pre)
 
