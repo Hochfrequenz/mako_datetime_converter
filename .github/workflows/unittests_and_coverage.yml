@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         working-directory: ./MaKoDateTimeConverter
         run: dotnet restore
-      - name: Install coverlet.msbuild in MaKoDateTimeConverter
-        working-directory: ./MaKoDateTimeConverter/MaKoDateTimeConverter
+      - name: Install coverlet.msbuild in MaKoDateTimeConverterTests
+        working-directory: ./MaKoDateTimeConverter/MaKoDateTimeConverterTests
         run: dotnet add package coverlet.msbuild
       - name: Measure Test Coverage
         working-directory: ./MaKoDateTimeConverter
