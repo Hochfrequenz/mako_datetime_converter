@@ -1,4 +1,4 @@
-﻿namespace MaKoDateTimeConverter;
+namespace MaKoDateTimeConverter;
 
 /// <summary>
 /// Describes how a datetime is meant by a system.
