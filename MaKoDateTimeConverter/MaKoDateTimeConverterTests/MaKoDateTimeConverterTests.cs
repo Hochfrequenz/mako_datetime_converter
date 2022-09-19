@@ -18,15 +18,17 @@ public class MaKoDateTimeConverterTests
     [TestCase("2022-06-15T23:00:00Z", false)]
     public void Test_Is_German_Midnight(string dateTimeString, bool isGermanMidnight)
     {
-        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
-        MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(dt).Should().Be(isGermanMidnight);
+        var dto = DateTimeOffset.Parse(dateTimeString);
+        var dt = dto.UtcDateTime;
+        dt.IsGermanMidnight().Should().Be(isGermanMidnight);
+        dto.IsGermanMidnight().Should().Be(isGermanMidnight);
     }
 
     [Test]
     public void Test_Is_German_Midnight_ArgumentException()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(localDt);
+        var checkAction = () => localDt.IsGermanMidnight();
         checkAction.Should().Throw<ArgumentException>();
     }
 
@@ -39,15 +41,17 @@ public class MaKoDateTimeConverterTests
     [TestCase("2022-06-15T04:00:00Z", true)]
     public void Test_Is_German_6am(string dateTimeString, bool isGerman6Am)
     {
-        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
-        MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(dt).Should().Be(isGerman6Am);
+        var dto = DateTimeOffset.Parse(dateTimeString);
+        var dt = dto.UtcDateTime;
+        dt.IsGerman6Am().Should().Be(isGerman6Am);
+        dto.IsGerman6Am().Should().Be(isGerman6Am);
     }
 
     [Test]
     public void Test_Is_German_6Am_ArgumentException()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(localDt);
+        var checkAction = () => localDt.IsGerman6Am();
         checkAction.Should().Throw<ArgumentException>();
     }
 
