@@ -21,7 +21,9 @@ public class MaKoDateTimeConverterTests
         var dto = DateTimeOffset.Parse(dateTimeString);
         var dt = dto.UtcDateTime;
         dt.IsGermanMidnight().Should().Be(isGermanMidnight);
+        ((DateTime?)dt).IsGermanMidnight().Should().Be(isGermanMidnight);
         dto.IsGermanMidnight().Should().Be(isGermanMidnight);
+        ((DateTimeOffset?)dto).IsGermanMidnight().Should().Be(isGermanMidnight);
     }
 
     [Test]
@@ -44,7 +46,9 @@ public class MaKoDateTimeConverterTests
         var dto = DateTimeOffset.Parse(dateTimeString);
         var dt = dto.UtcDateTime;
         dt.IsGerman6Am().Should().Be(isGerman6Am);
+        ((DateTime?)dt).IsGerman6Am().Should().Be(isGerman6Am);
         dto.IsGerman6Am().Should().Be(isGerman6Am);
+        ((DateTimeOffset?)dto).IsGerman6Am().Should().Be(isGerman6Am);
     }
 
     [Test]

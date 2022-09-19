@@ -37,6 +37,7 @@ public static class MaKoDateTimeConverter
         {
             throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
         }
+
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         return germanTime.Hour == 0 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
     }
@@ -44,7 +45,17 @@ public static class MaKoDateTimeConverter
     /// <summary>
     /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
     /// </summary>
+    public static bool? IsGermanMidnight(this DateTime? dt) => dt?.IsGermanMidnight();
+
+    /// <summary>
+    /// <inheritdoc cref="IsGermanMidnight(System.DateTime)"/>
+    /// </summary>
     public static bool IsGermanMidnight(this DateTimeOffset dto) => dto.UtcDateTime.IsGermanMidnight();
+
+    /// <summary>
+    /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
+    /// </summary>
+    public static bool? IsGermanMidnight(this DateTimeOffset? dto) => dto?.IsGermanMidnight();
 
     /// <summary>
     /// Converts a German 6AM to German midnight of the same German day
@@ -143,7 +154,17 @@ public static class MaKoDateTimeConverter
     /// <summary>
     /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
     /// </summary>
+    public static bool? IsGerman6Am(this DateTime? dt) => dt?.IsGerman6Am();
+
+    /// <summary>
+    /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
+    /// </summary>
     public static bool IsGerman6Am(this DateTimeOffset dto) => dto.UtcDateTime.IsGerman6Am();
+
+    /// <summary>
+    /// <inheritdoc cref="IsGerman6Am(System.DateTimeOffset)"/>
+    /// </summary>
+    public static bool? IsGerman6Am(this DateTimeOffset? dto) => dto?.IsGerman6Am();
 
     /// <summary>
     /// converts the given <paramref name="sourceDateTime"/> to a target by applying all transformations which are derived from the given <paramref name="conversionConfiguration"/> where <paramref name="sourceDateTime"/> is described by <see cref="DateTimeConversionConfiguration.Source"/>
