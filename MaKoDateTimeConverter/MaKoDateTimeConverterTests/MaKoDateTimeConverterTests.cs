@@ -42,7 +42,7 @@ public class MaKoDateTimeConverterTests
     public void Test_Is_German_6am(string dateTimeString, bool isGerman6Am)
     {
         var dto = DateTimeOffset.Parse(dateTimeString);
-        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var dt = dto.UtcDateTime;
         dt.IsGerman6Am().Should().Be(isGerman6Am);
         dto.IsGerman6Am().Should().Be(isGerman6Am);
     }
