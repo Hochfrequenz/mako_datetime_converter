@@ -1,0 +1,34 @@
+name: Unittests and Coverage
+
+on: [push, pull_request]
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@master
+        with:
+          dotnet-version: 6.0.102
+      - name: Run Tests
+        working-directory: ./MaKoDateTimeConverter
+        run: dotnet test --configuration Release
+  coverage:
+    needs: unittest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@master
+        with:
+          dotnet-version: 6.0.102
+      - name: Install dependencies
+        working-directory: ./MaKoDateTimeConverter
+        run: dotnet restore
+      - name: Install coverlet.msbuild in MaKoDateTimeConverterTests
+        working-directory: ./MaKoDateTimeConverter/MaKoDateTimeConverterTests
+        run: dotnet add package coverlet.msbuild
+      - name: Measure Test Coverage
+        working-directory: ./MaKoDateTimeConverter
+        run: dotnet test /p:Threshold=100 /p:Include=\"[*]MaKoDateTimeConverter.*\" /p:ThresholdType=line /p:CollectCoverage=true /p:SkipAutoProps=true /p:CoverletOutputFormat=lcov --configuration Release
