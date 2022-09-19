@@ -31,7 +31,7 @@ public static class MaKoDateTimeConverter
     /// </summary>
     /// <param name="dt"></param>
     /// <returns>returns true iff the given datetime is midnight in Germany</returns>
-    public static bool IsGermanMidnight(DateTime dt)
+    public static bool IsGermanMidnight(this DateTime dt)
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
@@ -40,6 +40,11 @@ public static class MaKoDateTimeConverter
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         return germanTime.Hour == 0 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
     }
+
+    /// <summary>
+    /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
+    /// </summary>
+    public static bool IsGermanMidnight(this DateTimeOffset dto) => dto.UtcDateTime.IsGermanMidnight();
 
     /// <summary>
     /// Converts a German 6AM to German midnight of the same German day
@@ -125,7 +130,7 @@ public static class MaKoDateTimeConverter
     /// </summary>
     /// <param name="dt"></param>
     /// <returns>returns true iff the given datetime is 06:00am in Germany</returns>
-    public static bool IsGerman6Am(DateTime dt)
+    public static bool IsGerman6Am(this DateTime dt)
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
@@ -134,6 +139,11 @@ public static class MaKoDateTimeConverter
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         return germanTime.Hour == 6 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
     }
+
+    /// <summary>
+    /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
+    /// </summary>
+    public static bool IsGerman6Am(this DateTimeOffset dto) => dto.UtcDateTime.IsGerman6Am();
 
     /// <summary>
     /// converts the given <paramref name="sourceDateTime"/> to a target by applying all transformations which are derived from the given <paramref name="conversionConfiguration"/> where <paramref name="sourceDateTime"/> is described by <see cref="DateTimeConversionConfiguration.Source"/>
