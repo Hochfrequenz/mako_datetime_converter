@@ -2,24 +2,22 @@
 
     <PropertyGroup>
         <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
-        <PackageProjectUrl
-    >https://github.com/Hochfrequenz/time_slice_net/</PackageProjectUrl>
-        <PackageLicense
-    >https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
-        <RepositoryUrl
-    >https://github.com/Hochfrequenz/time_slice_net/</RepositoryUrl>
+        <PackageProjectUrl>github.com/Hochfrequenz/mako_datetime_converter/</PackageProjectUrl>
+        <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
+        <RepositoryUrl>github.com/Hochfrequenz/mako_datetime_converter/</RepositoryUrl>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <TargetFramework>net6.0</TargetFramework>
+        <PackageLicenseUrl>https://github.com/Hochfrequenz/mako_datetime_converter/blob/main/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DocumentationFile>bin\Debug\TimeSlice.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\MaKoDateTimeConverter.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\TimeSlice.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\MaKoDateTimeConverter.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
