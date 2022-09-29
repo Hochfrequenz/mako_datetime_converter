@@ -1,7 +1,9 @@
-# mako_datetime_converter
+# mako_datetime_converter (C#)
 
 .NET nuget package to convert date times between German "Gastag" and "Stromtag", between inclusive and exclusive end dates and combinations of all them.
 This is relevant for German Marktkommunikation ("MaKo").
+
+There is Golang port of this library: [`mako_time_converter` (go)](https://github.com/Hochfrequenz/mako_time_converter).
 
 ## Rationale
 
