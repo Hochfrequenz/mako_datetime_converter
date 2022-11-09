@@ -5,12 +5,15 @@ on: [push, pull_request]
 jobs:
   unittest:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ["6.0.201", "7.0.100"]
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.102
+          dotnet-version: ${{ matrix.dotnet-version }}
       - name: Run Tests
         working-directory: ./MaKoDateTimeConverter
         run: dotnet test --configuration Release
