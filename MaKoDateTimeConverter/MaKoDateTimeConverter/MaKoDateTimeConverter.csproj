@@ -10,7 +10,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
-    
+
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DocumentationFile>bin\Debug\MaKoDateTimeConverter.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -21,4 +21,16 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <DebugType>Embedded</DebugType>
+        <EmbedAllSources>True</EmbedAllSources>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SourceLink.Copy.PdbFiles" Version="2.8.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
 </Project>
