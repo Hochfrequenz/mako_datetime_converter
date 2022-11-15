@@ -199,7 +199,12 @@ public static class MaKoDateTimeConverter
             throw new ArgumentException("The configuration is invalid", nameof(conversionConfiguration));
         }
 
-        DateTimeOffset result = sourceDateTime;
+        if (sourceDateTime.Kind == DateTimeKind.Unspecified)
+        {
+            throw new ArgumentException($"The kind of the provided datetime must not be unspecified but was {sourceDateTime.Kind}", nameof(sourceDateTime));
+        }
+        DateTimeOffset result = sourceDateTime; // for unspecified datetimes this is an implicit conversion to a Utc DateTime(Offset)
+        // see: https://learn.microsoft.com/en-us/dotnet/standard/datetime/instantiating-a-datetimeoffset-object?source=recommendations#implicit-type-conversion
         if (conversionConfiguration.Source.StripTime)
         {
             result = result.StripTime();
