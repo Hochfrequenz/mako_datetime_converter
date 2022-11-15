@@ -369,4 +369,27 @@ public class MaKoDateTimeConverterTests
         var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
     }
+
+    [Test]
+    public void DateTime_With_Unspecified_Kind_Shall_Raise_ArgumentException()
+    {
+        var unspecifiedDt = new DateTime(2022, 5, 31, 22, 0, 0, DateTimeKind.Unspecified); // smells like utc, but is unspecified
+        var exclusiveToInclusiveEndDateConversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration()
+            {
+                IsGas = false,
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Exclusive
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsGas = false,
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive
+            }
+        };
+        Action conversionOfUnspecifiedDateTime = ()=> unspecifiedDt.Convert(exclusiveToInclusiveEndDateConversion);
+        conversionOfUnspecifiedDateTime.Should().ThrowExactly<ArgumentException>();
+    }
 }
