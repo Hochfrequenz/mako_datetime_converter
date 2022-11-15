@@ -389,7 +389,7 @@ public class MaKoDateTimeConverterTests
                 EndDateTimeKind = EndDateTimeKind.Inclusive
             }
         };
-        Action conversionOfUnspecifiedDateTime = ()=> unspecifiedDt.Convert(exclusiveToInclusiveEndDateConversion);
+        Action conversionOfUnspecifiedDateTime = () => unspecifiedDt.Convert(exclusiveToInclusiveEndDateConversion);
         conversionOfUnspecifiedDateTime.Should().ThrowExactly<ArgumentException>();
     }
 }
