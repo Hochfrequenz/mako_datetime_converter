@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
-        <PackageProjectUrl>github.com/Hochfrequenz/mako_datetime_converter/</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</PackageProjectUrl>
         <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
-        <RepositoryUrl>github.com/Hochfrequenz/mako_datetime_converter/</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</RepositoryUrl>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <TargetFramework>net6.0</TargetFramework>
