@@ -11,7 +11,7 @@ The German Marktkommunikation ("MaKo") defines some rules regarding date times:
 
 - you shall communicate end dates as exclusive (which is [generally a good idea](https://hf-kklein.github.io/exclusive_end_dates.github.io/))
 - you shall use UTC date times with a specified UTC offset (which is a good idea)
-- and you shall always use UTC-offset 0 (which makes things unnecessary complicated)
+- and you shall always use UTC-offset 0 (a rule with good intentions)
 - in electricity all days start and end at midnight of German local time
 - but in gas all days start and end at 6am German local time ("Gas-Tag")
 
