@@ -1,3 +1,6 @@
+![Nuget Package](https://badgen.net/nuget/v/mako_datetime_converter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # mako_datetime_converter (C#)
 
 .NET nuget package to convert date times between German "Gastag" and "Stromtag", between inclusive and exclusive end dates and combinations of all them.
