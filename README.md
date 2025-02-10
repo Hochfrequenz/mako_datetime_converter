@@ -1,4 +1,4 @@
-![Nuget Package](https://badgen.net/nuget/v/MakoDdateTimeConverter)
+![Nuget Package](https://badgen.net/nuget/v/MaKoDateTimeConverter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 # mako_datetime_converter (C#)
