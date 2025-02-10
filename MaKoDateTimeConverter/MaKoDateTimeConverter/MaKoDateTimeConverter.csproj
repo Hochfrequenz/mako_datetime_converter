@@ -5,10 +5,10 @@
         <PackageProjectUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</PackageProjectUrl>
         <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
         <RepositoryUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</RepositoryUrl>
-        <LangVersion>10</LangVersion>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
-        <TargetFramework>net7.0</TargetFramework>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
