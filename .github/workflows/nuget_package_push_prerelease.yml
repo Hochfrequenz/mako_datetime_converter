@@ -25,6 +25,8 @@ jobs:
         id: tagMaKoDateTimeConverter
         with:
           tagRegex: "prerelease-v(\\d+\\.\\d+\\.\\d+)"
+      - name: copy README.md to package folder
+        run: cp README.md MaKoDateTimeConverter/MaKoDateTimeConverter/README.md
       - name: Build/Check for compile errors (dotnet build)
         working-directory: "MaKoDateTimeConverter"
         run: dotnet build --configuration Release
