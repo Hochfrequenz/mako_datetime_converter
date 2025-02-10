@@ -3,12 +3,13 @@
     <PropertyGroup>
         <Authors>Hochfrequenz Unternehmensberatung GmbH</Authors>
         <PackageProjectUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</PackageProjectUrl>
-        <PackageLicense>https://github.com/Hochfrequenz/time_slice_net/blob/main/LICENSE</PackageLicense>
+        <PackageLicense>https://github.com/Hochfrequenz/mako_datetime_converter/blob/main/LICENSE</PackageLicense>
         <RepositoryUrl>https://github.com/Hochfrequenz/mako_datetime_converter/</RepositoryUrl>
         <LangVersion>default</LangVersion>
         <Nullable>enable</Nullable>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -32,5 +33,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/> <!-- copied to here during the release github action -->
     </ItemGroup>
 </Project>
