@@ -11,7 +11,8 @@ public static class MaKoDateTimeConverter
     /// the Berlin time zone as serialized string
     /// </summary>
     /// <remarks>Created using <see cref="TimeZoneInfo.ToSerializedString"/></remarks>
-    private const string BerlinTimeSerialized = "Central Europe Standard Time;60;(UTC+01:00) Belgrad, Bratislava (Pressburg), Budapest, Ljubljana, Prag;Mitteleuropäische Zeit ;Mitteleuropäische Sommerzeit ;[01:01:0001;12:31:9999;60;[0;02:00:00;3;5;0;];[0;03:00:00;10;5;0;];];";
+    private const string BerlinTimeSerialized =
+        "Central Europe Standard Time;60;(UTC+01:00) Belgrad, Bratislava (Pressburg), Budapest, Ljubljana, Prag;Mitteleuropäische Zeit ;Mitteleuropäische Sommerzeit ;[01:01:0001;12:31:9999;60;[0;02:00:00;3;5;0;];[0;03:00:00;10;5;0;];];";
 
     /// <summary>
     /// the timezone in Germany
@@ -35,11 +36,17 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
 
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
-        return germanTime.Hour == 0 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
+        return germanTime.Hour == 0
+            && germanTime.Minute == 0
+            && germanTime.Second == 0
+            && germanTime.Millisecond == 0;
     }
 
     /// <summary>
@@ -50,7 +57,8 @@ public static class MaKoDateTimeConverter
     /// <summary>
     /// <inheritdoc cref="IsGermanMidnight(System.DateTime)"/>
     /// </summary>
-    public static bool IsGermanMidnight(this DateTimeOffset dto) => dto.UtcDateTime.IsGermanMidnight();
+    public static bool IsGermanMidnight(this DateTimeOffset dto) =>
+        dto.UtcDateTime.IsGermanMidnight();
 
     /// <summary>
     /// <inheritdoc cref="IsGerman6Am(System.DateTime)"/>
@@ -67,7 +75,10 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         if (!IsGerman6Am(dt))
         {
@@ -75,10 +86,17 @@ public static class MaKoDateTimeConverter
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         // the offset between strom and gastag is _not_ always 6hours. On the days of the DST/non-DST transition it may be 7 or 5 hours
-        var germanMidnightOfSameDay = new DateTime(germanTime.Year, germanTime.Month, germanTime.Day, 0, 0, 0, DateTimeKind.Unspecified);
+        var germanMidnightOfSameDay = new DateTime(
+            germanTime.Year,
+            germanTime.Month,
+            germanTime.Day,
+            0,
+            0,
+            0,
+            DateTimeKind.Unspecified
+        );
         return TimeZoneInfo.ConvertTimeToUtc(germanMidnightOfSameDay, BerlinTime);
     }
-
 
     /// <summary>
     /// Converts a German midnight to 6Am of the same German day
@@ -90,7 +108,10 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         if (!IsGermanMidnight(dt))
         {
@@ -98,7 +119,15 @@ public static class MaKoDateTimeConverter
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         // the offset between strom and gastag is _not_ always 6hours. On the days of the DST/non-DST transition it may be 7 or 5 hours
-        var german6AmOfSameDay = new DateTime(germanTime.Year, germanTime.Month, germanTime.Day, 6, 0, 0, DateTimeKind.Unspecified);
+        var german6AmOfSameDay = new DateTime(
+            germanTime.Year,
+            germanTime.Month,
+            germanTime.Day,
+            6,
+            0,
+            0,
+            DateTimeKind.Unspecified
+        );
         return TimeZoneInfo.ConvertTimeToUtc(german6AmOfSameDay, BerlinTime);
     }
 
@@ -112,7 +141,10 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         var nextDay = germanTime + TimeSpan.FromDays(1);
@@ -129,7 +161,10 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
         var nextDay = germanTime - TimeSpan.FromDays(1);
@@ -144,17 +179,30 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
-        var result = new DateTime(germanTime.Year, germanTime.Month, germanTime.Day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+        var result = new DateTime(
+            germanTime.Year,
+            germanTime.Month,
+            germanTime.Day,
+            0,
+            0,
+            0,
+            0,
+            DateTimeKind.Unspecified
+        );
         return TimeZoneInfo.ConvertTimeToUtc(result, BerlinTime);
     }
 
     /// <summary>
     /// <inheritdoc cref="StripTime(System.DateTime)"/>
     /// </summary>
-    public static DateTimeOffset StripTime(this DateTimeOffset dto) => new(dto.UtcDateTime.StripTime());
+    public static DateTimeOffset StripTime(this DateTimeOffset dto) =>
+        new(dto.UtcDateTime.StripTime());
 
     /// <summary>
     /// check if this is the begin of a German Gastag
@@ -165,10 +213,16 @@ public static class MaKoDateTimeConverter
     {
         if (dt.Kind != DateTimeKind.Utc)
         {
-            throw new ArgumentException($"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}", nameof(dt));
+            throw new ArgumentException(
+                $"The {nameof(dt.Kind)} has to be {DateTimeKind.Utc} but was {dt.Kind}",
+                nameof(dt)
+            );
         }
         var germanTime = TimeZoneInfo.ConvertTimeFromUtc(dt, BerlinTime);
-        return germanTime.Hour == 6 && germanTime.Minute == 0 && germanTime.Second == 0 && germanTime.Millisecond == 0;
+        return germanTime.Hour == 6
+            && germanTime.Minute == 0
+            && germanTime.Second == 0
+            && germanTime.Millisecond == 0;
     }
 
     /// <summary>
@@ -192,16 +246,25 @@ public static class MaKoDateTimeConverter
     /// <param name="sourceDateTime">the source date time (input value of the conversion)</param>
     /// <param name="conversionConfiguration">describes the steps necessary to convert the given <paramref name="sourceDateTime"/></param>
     /// <returns></returns>
-    public static DateTime Convert(this DateTime sourceDateTime, DateTimeConversionConfiguration conversionConfiguration)
+    public static DateTime Convert(
+        this DateTime sourceDateTime,
+        DateTimeConversionConfiguration conversionConfiguration
+    )
     {
         if (!conversionConfiguration.IsValid)
         {
-            throw new ArgumentException("The configuration is invalid", nameof(conversionConfiguration));
+            throw new ArgumentException(
+                "The configuration is invalid",
+                nameof(conversionConfiguration)
+            );
         }
 
         if (sourceDateTime.Kind == DateTimeKind.Unspecified)
         {
-            throw new ArgumentException($"The kind of the provided datetime must not be unspecified but was {sourceDateTime.Kind}", nameof(sourceDateTime));
+            throw new ArgumentException(
+                $"The kind of the provided datetime must not be unspecified but was {sourceDateTime.Kind}",
+                nameof(sourceDateTime)
+            );
         }
         DateTimeOffset result = sourceDateTime; // for unspecified datetimes this is an implicit conversion to a Utc DateTime(Offset)
         // see: https://learn.microsoft.com/en-us/dotnet/standard/datetime/instantiating-a-datetimeoffset-object?source=recommendations#implicit-type-conversion
@@ -219,7 +282,10 @@ public static class MaKoDateTimeConverter
         if (conversionConfiguration.Source.IsGas) // this implies that the target is also gas, because otherwise the configuration would be invalid
         {
             // handle gas stuff here
-            if (conversionConfiguration.Source.IsGasTagAware!.Value && !conversionConfiguration.Target.IsGasTagAware!.Value)
+            if (
+                conversionConfiguration.Source.IsGasTagAware!.Value
+                && !conversionConfiguration.Target.IsGasTagAware!.Value
+            )
             {
                 // convert from gas-tag to non-gas-tag
                 if (IsGerman6Am(result))
@@ -227,7 +293,10 @@ public static class MaKoDateTimeConverter
                     result = Convert6AamToMidnight(result.UtcDateTime);
                 }
             }
-            if (!conversionConfiguration.Source.IsGasTagAware!.Value && conversionConfiguration.Target.IsGasTagAware!.Value)
+            if (
+                !conversionConfiguration.Source.IsGasTagAware!.Value
+                && conversionConfiguration.Target.IsGasTagAware!.Value
+            )
             {
                 // convert from non-gastag to gas-tag
                 if (IsGermanMidnight(result))
@@ -241,8 +310,12 @@ public static class MaKoDateTimeConverter
             // handle strom-only stuff here
         }
 
-        if (conversionConfiguration.Source.IsEndDate && conversionConfiguration.Target.IsEndDate &&
-            conversionConfiguration.Source.EndDateTimeKind!.Value != conversionConfiguration.Target.EndDateTimeKind!.Value)
+        if (
+            conversionConfiguration.Source.IsEndDate
+            && conversionConfiguration.Target.IsEndDate
+            && conversionConfiguration.Source.EndDateTimeKind!.Value
+                != conversionConfiguration.Target.EndDateTimeKind!.Value
+        )
         {
             if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Inclusive) // implicit: target is exclusive
             {
@@ -271,6 +344,8 @@ public static class MaKoDateTimeConverter
     /// <param name="sourceDateTime"></param>
     /// <param name="conversionConfiguration"></param>
     /// <returns></returns>
-    public static DateTimeOffset Convert(this DateTimeOffset sourceDateTime, DateTimeConversionConfiguration conversionConfiguration) =>
-        sourceDateTime.UtcDateTime.Convert(conversionConfiguration);
+    public static DateTimeOffset Convert(
+        this DateTimeOffset sourceDateTime,
+        DateTimeConversionConfiguration conversionConfiguration
+    ) => sourceDateTime.UtcDateTime.Convert(conversionConfiguration);
 }

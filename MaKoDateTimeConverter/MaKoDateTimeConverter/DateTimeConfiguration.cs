@@ -23,7 +23,7 @@ public record DateTimeConfiguration
     /// </summary>
     /// <remarks>
     /// Please note that this is independent from the information whether the datetime is actually <see cref="IsGasTagAware"/>!
-    /// There are systems that discriminate Gas and non-Gas (this is what this flag is for) but are still unaware of the German Gas-Tag. 
+    /// There are systems that discriminate Gas and non-Gas (this is what this flag is for) but are still unaware of the German Gas-Tag.
     /// </remarks>
     [System.Text.Json.Serialization.JsonPropertyName("isGas")]
     public bool IsGas { get; set; }
@@ -33,7 +33,6 @@ public record DateTimeConfiguration
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("isGasTagAware")]
     public bool? IsGasTagAware { get; set; }
-
 
     /// <summary>
     /// Set true to remove all hours, minutes, seconds, milliseconds from the respective DateTime.
@@ -48,6 +47,9 @@ public record DateTimeConfiguration
     /// </summary>
     /// <remarks>This basically checks if the nullable properties are not null under certain requirements</remarks>
     [System.Text.Json.Serialization.JsonIgnore]
-    public bool IsValid => ((IsEndDate == false && !EndDateTimeKind.HasValue) || (IsEndDate && EndDateTimeKind.HasValue))
-                           && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
+    public bool IsValid =>
+        (
+            (IsEndDate == false && !EndDateTimeKind.HasValue)
+            || (IsEndDate && EndDateTimeKind.HasValue)
+        ) && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
 }
