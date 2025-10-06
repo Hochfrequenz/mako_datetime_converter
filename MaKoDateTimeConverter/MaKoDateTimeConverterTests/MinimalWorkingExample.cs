@@ -16,7 +16,7 @@ public class MinimalWorkingExample
         // assume you received an edifact message and were able to parse e.g. a contract end date.
         // this library assumes that you already have a utc-datetime available
 
-        // this is e.g. the end date of a gas supply contract that ends at the end of 2022 
+        // this is e.g. the end date of a gas supply contract that ends at the end of 2022
         var myDateTimeOffsetFromEdifact = new DateTimeOffset(2023, 1, 1, 5, 0, 0, TimeSpan.Zero); // end of the last Gas-Tag in 2022
 
         // now we want to hand this date over to a system that doesn't know of the gas quirks and handles end date inclusively
@@ -28,7 +28,7 @@ public class MinimalWorkingExample
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Exclusive,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
             // the target describes into which kind of datetime we want to convert it
             Target = new DateTimeConfiguration
@@ -36,7 +36,7 @@ public class MinimalWorkingExample
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
                 IsGas = true,
-                IsGasTagAware = false
+                IsGasTagAware = false,
             },
         };
         var convertedDto = myDateTimeOffsetFromEdifact.Convert(config);

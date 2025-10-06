@@ -23,9 +23,11 @@ public record DateTimeConversionConfiguration
     /// true iff the configuration is valid
     /// </summary>
     [JsonIgnore]
-    public bool IsValid => Source.IsGas == Target.IsGas // you must not convert to/from different sparten 
-                           && Source.IsEndDate == Target.IsEndDate // you must not convert to/from end/start date
-                           && Source.IsValid && Target.IsValid;
+    public bool IsValid =>
+        Source.IsGas == Target.IsGas // you must not convert to/from different sparten
+        && Source.IsEndDate == Target.IsEndDate // you must not convert to/from end/start date
+        && Source.IsValid
+        && Target.IsValid;
 
     /// <summary>
     /// returns a new configuration that has switched <see cref="Target"/> and <see cref="Source"/>
@@ -35,7 +37,9 @@ public record DateTimeConversionConfiguration
     {
         // we serialize and deserialize the configuration to create a deep copy
         var serializedConfig = System.Text.Json.JsonSerializer.Serialize(this);
-        var result = System.Text.Json.JsonSerializer.Deserialize<DateTimeConversionConfiguration>(serializedConfig);
+        var result = System.Text.Json.JsonSerializer.Deserialize<DateTimeConversionConfiguration>(
+            serializedConfig
+        );
         var oldSource = result!.Source;
         var oldTarget = result.Target;
         result.Source = oldTarget;

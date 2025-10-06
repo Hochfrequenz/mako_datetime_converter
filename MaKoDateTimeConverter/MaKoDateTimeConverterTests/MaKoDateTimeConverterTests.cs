@@ -1,7 +1,7 @@
 using System;
 using FluentAssertions;
-using NUnit.Framework;
 using MaKoDateTimeConverter;
+using NUnit.Framework;
 
 namespace MaKoDateTimeConverterTests;
 
@@ -34,7 +34,6 @@ public class MaKoDateTimeConverterTests
         checkAction.Should().Throw<ArgumentException>();
     }
 
-
     [Test]
     [TestCase("2022-12-31T23:00:00Z", false)]
     [TestCase("2022-06-15T22:00:00Z", false)]
@@ -63,7 +62,8 @@ public class MaKoDateTimeConverterTests
     public void Test_Is_German_Midnight_Conversion_ArgumentException_Utc()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.Convert6AamToMidnight(localDt);
+        var checkAction = () =>
+            MaKoDateTimeConverter.MaKoDateTimeConverter.Convert6AamToMidnight(localDt);
         checkAction.Should().Throw<ArgumentException>();
     }
 
@@ -71,7 +71,8 @@ public class MaKoDateTimeConverterTests
     public void Test_Is_German_Midnight_Conversion_ArgumentException_6Am()
     {
         var localDt = new DateTime(2022, 1, 1, 3, 0, 0, DateTimeKind.Utc);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.Convert6AamToMidnight(localDt);
+        var checkAction = () =>
+            MaKoDateTimeConverter.MaKoDateTimeConverter.Convert6AamToMidnight(localDt);
         checkAction.Should().Throw<ArgumentException>();
     }
 
@@ -93,7 +94,8 @@ public class MaKoDateTimeConverterTests
     public void Test_Is_German_6Am_Conversion_ArgumentException_Utc()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(localDt);
+        var checkAction = () =>
+            MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(localDt);
         checkAction.Should().Throw<ArgumentException>();
     }
 
@@ -101,7 +103,8 @@ public class MaKoDateTimeConverterTests
     public void Test_Is_German_6Am_Conversion_ArgumentException_6Am()
     {
         var localDt = new DateTime(2022, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(localDt);
+        var checkAction = () =>
+            MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(localDt);
         checkAction.Should().Throw<ArgumentException>();
     }
 
@@ -153,13 +156,17 @@ public class MaKoDateTimeConverterTests
     public void Test_SubtractGermanDay_ArgumentException_Utc()
     {
         var localDt = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Local);
-        var checkAction = () => MaKoDateTimeConverter.MaKoDateTimeConverter.SubtractGermanDay(localDt);
+        var checkAction = () =>
+            MaKoDateTimeConverter.MaKoDateTimeConverter.SubtractGermanDay(localDt);
         checkAction.Should().Throw<ArgumentException>();
     }
 
     [TestCase("2023-06-01T04:00:00Z", "2023-05-31T22:00:00Z")]
     [TestCase("2023-12-01T05:00:00Z", "2023-11-30T23:00:00Z")]
-    public void Test_GasTagAware_To_NonGasTagAware(string dateTimeString, string expectedResultString)
+    public void Test_GasTagAware_To_NonGasTagAware(
+        string dateTimeString,
+        string expectedResultString
+    )
     {
         var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
         var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
@@ -169,14 +176,14 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = false,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = false,
                 IsGas = true,
-                IsGasTagAware = false
-            }
+                IsGasTagAware = false,
+            },
         };
         var actual = dt.Convert(conversion);
         actual.Should().Be(expected);
@@ -197,13 +204,13 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = false,
                 IsGas = true,
-                IsGasTagAware = false
+                IsGasTagAware = false,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = false,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
         };
         var actual = dt.Convert(conversion);
@@ -217,7 +224,10 @@ public class MaKoDateTimeConverterTests
     [TestCase("2023-05-31T22:00:00Z", "2023-06-01T22:00:00Z")]
     [TestCase("2023-12-31T23:00:00Z", "2024-01-01T23:00:00Z")]
     [TestCase("2023-12-01T23:00:00Z", "2023-12-02T23:00:00Z")]
-    public void Test_Strom_InclusiveEnd_To_ExclusiveEnd(string dateTimeString, string expectedResultString)
+    public void Test_Strom_InclusiveEnd_To_ExclusiveEnd(
+        string dateTimeString,
+        string expectedResultString
+    )
     {
         var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
         var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
@@ -246,7 +256,10 @@ public class MaKoDateTimeConverterTests
     [TestCase("2023-05-30T04:00:00Z", "2023-05-31T04:00:00Z")]
     [TestCase("2023-12-30T05:00:00Z", "2023-12-31T05:00:00Z")]
     [TestCase("2023-12-01T05:00:00Z", "2023-12-02T05:00:00Z")]
-    public void Test_Gas_InclusiveEnd_To_ExclusiveEnd(string dateTimeString, string expectedResultString)
+    public void Test_Gas_InclusiveEnd_To_ExclusiveEnd(
+        string dateTimeString,
+        string expectedResultString
+    )
     {
         var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
         var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
@@ -257,14 +270,14 @@ public class MaKoDateTimeConverterTests
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Exclusive,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
         };
         var actual = dt.Convert(conversion);
@@ -277,7 +290,10 @@ public class MaKoDateTimeConverterTests
     [TestCase("2023-05-30T22:00:00Z", "2023-06-01T04:00:00Z")]
     [TestCase("2023-03-25T23:00:00Z", "2023-03-27T04:00:00Z")]
     [TestCase("2022-10-29T22:00:00Z", "2022-10-31T05:00:00Z")]
-    public void Test_Gas_InclusiveEnd_To_ExclusiveEnd_And_Make_GasTagAware(string dateTimeString, string expectedResultString)
+    public void Test_Gas_InclusiveEnd_To_ExclusiveEnd_And_Make_GasTagAware(
+        string dateTimeString,
+        string expectedResultString
+    )
     {
         var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
         var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
@@ -288,14 +304,14 @@ public class MaKoDateTimeConverterTests
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
                 IsGas = true,
-                IsGasTagAware = false
+                IsGasTagAware = false,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Exclusive,
                 IsGas = true,
-                IsGasTagAware = true
+                IsGasTagAware = true,
             },
         };
         var actual = dt.Convert(conversion);
@@ -316,7 +332,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                IsGas = false
+                IsGas = false,
             },
             Target = new DateTimeConfiguration
             {
@@ -343,7 +359,7 @@ public class MaKoDateTimeConverterTests
         {
             Source = new DateTimeConfiguration
             {
-                StripTime = true // <-- this is what is actually tested here
+                StripTime = true, // <-- this is what is actually tested here
             },
             Target = new DateTimeConfiguration(),
         };
@@ -363,7 +379,7 @@ public class MaKoDateTimeConverterTests
             Source = new DateTimeConfiguration(),
             Target = new DateTimeConfiguration
             {
-                StripTime = true // <-- this is what is actually tested here
+                StripTime = true, // <-- this is what is actually tested here
             },
         };
         var actual = dt.Convert(conversion);
@@ -380,16 +396,17 @@ public class MaKoDateTimeConverterTests
             {
                 IsGas = false,
                 IsEndDate = true,
-                EndDateTimeKind = EndDateTimeKind.Exclusive
+                EndDateTimeKind = EndDateTimeKind.Exclusive,
             },
             Target = new DateTimeConfiguration
             {
                 IsGas = false,
                 IsEndDate = true,
-                EndDateTimeKind = EndDateTimeKind.Inclusive
-            }
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+            },
         };
-        Action conversionOfUnspecifiedDateTime = () => unspecifiedDt.Convert(exclusiveToInclusiveEndDateConversion);
+        Action conversionOfUnspecifiedDateTime = () =>
+            unspecifiedDt.Convert(exclusiveToInclusiveEndDateConversion);
         conversionOfUnspecifiedDateTime.Should().ThrowExactly<ArgumentException>();
     }
 }

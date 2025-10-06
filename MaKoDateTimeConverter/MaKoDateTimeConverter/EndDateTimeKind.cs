@@ -13,6 +13,7 @@ public enum EndDateTimeKind
     /// </summary>
     /// <example>"2022-10-31" for end of October</example>
     Inclusive,
+
     /// <summary>
     /// The end date shall be understood as exclusive end date
     /// </summary>
