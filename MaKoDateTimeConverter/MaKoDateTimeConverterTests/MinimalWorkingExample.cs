@@ -1,5 +1,5 @@
 ﻿using System;
-using FluentAssertions;
+using AwesomeAssertions;
 using MaKoDateTimeConverter; // this imports the .Convert(...) extension method of DateTime
 using NUnit.Framework;
 
