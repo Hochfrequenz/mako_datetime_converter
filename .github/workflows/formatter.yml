@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Setup .net
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9
-      - name: Install dotnet-format
-        run: |
-          dotnet tool install -g dotnet-format
-      - name: Run dotnet-format
-        working-directory: ./MaKoDateTimeConverter
-        run: dotnet-format MaKoDateTimeConverter.sln --check
+      - name: Restore .NET tools
+        run: dotnet tool restore
+        working-directory: "MaKoDateTimeConverter"
+      - name: Run CSharpier
+        run: dotnet csharpier check .
+        working-directory: "MaKoDateTimeConverter"
