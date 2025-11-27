@@ -10,6 +10,12 @@ jobs:
     runs-on: windows-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+    environment: "release" # has to match the policy name in the nuget.org Trusted Publishing setup.
+    # if the environment name is not set here, you'll run into an error message like "Error: Token exchange failed (401): Environment mismatch for policy 'release': expected 'release', actual ''"
+    # This job is based on the Trusted Publishing Setup.
+    # See https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing for details.
+    permissions:
+      id-token: write # enable GitHub OIDC token issuance for this job
     steps:
       - uses: actions/checkout@v6
       - name: Setup .NET Core
@@ -33,8 +39,13 @@ jobs:
         run: dotnet pack MaKoDateTimeConverter.csproj --configuration Release -p:PackageVersion="${{ steps.tagMaKoDateTimeConverter.outputs.tag }}"
       - name: Setup Nuget.exe
         uses: warrenbuckley/Setup-Nuget@v1
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: hf-kklein
+          # because the package is owned by hf-kklein: https://www.nuget.org/packages/MaKoDateTimeConverter/
       - name: Nuget push MaKoDateTimeConverter
         working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
         run: |
-          nuget setApiKey ${{ secrets.NUGET_ORG_PUSH_TOKEN }}
-          nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+          nuget push .\bin\Release\*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
