@@ -39,7 +39,6 @@ This repository is available as nuget package:
 
 - [`MaKoDateTimeConverter`](https://www.nuget.org/packages/MaKoDateTimeConverter/) for the core functionalities
   - ![Nuget Package](https://badgen.net/nuget/v/MaKoDateTimeConverter)
-  - ![Nuget Prerelease](https://badgen.net/nuget/v/MaKoDateTimeConverter/pre)
 
 ## Code Quality / Production Readiness
 
@@ -47,9 +46,6 @@ This repository is available as nuget package:
 - The package has no dependencies itself. ✔️
 
 ## Release Workflow
-
-To create a **pre-release** nuget package, create a tag of the form `prerelease-vx.y.z` where `x.y.z` is the semantic version of the pre-release.
-This will create and push nuget packages with the specified version `x.y.z` and a `-betaYYYYMMDDHHmmss` suffix.
 
 To create a **release** nuget package, create a tag of the form `vx.y.z` where `x.y.z` is the semantic version of the release.
 This will create and push nuget packages with the specified version `x.y.z`.
