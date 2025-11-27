@@ -48,4 +48,5 @@ jobs:
       - name: Nuget push MaKoDateTimeConverter
         working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
         run: |
-          nuget push .\bin\Release\*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
+          nuget setApiKey ${{steps.login.outputs.NUGET_API_KEY}}
+          nuget push .\bin\Release\*.nupkg  -Source https://api.nuget.org/v3/index.json -SkipDuplicate -NoSymbols
