@@ -41,7 +41,7 @@ jobs:
         uses: NuGet/login@v1
         id: login
         with:
-          user: hf-kklein
+          user: Hochfrequenz
           # because the package is owned by hf-kklein: https://www.nuget.org/packages/MaKoDateTimeConverter/
       - name: Nuget push MaKoDateTimeConverter
         working-directory: "MaKoDateTimeConverter/MaKoDateTimeConverter"
