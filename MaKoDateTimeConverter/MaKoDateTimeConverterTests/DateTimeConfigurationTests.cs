@@ -82,7 +82,14 @@ namespace MaKoDateTimeConverterTests
             if (expectedResolutionString is null)
                 config!.Resolution.Should().BeNull();
             else
-                config!.Resolution.Should().Be(TimeSpan.Parse(expectedResolutionString));
+                config!
+                    .Resolution.Should()
+                    .Be(
+                        TimeSpan.Parse(
+                            expectedResolutionString,
+                            System.Globalization.CultureInfo.InvariantCulture
+                        )
+                    );
         }
 
         [Test]
