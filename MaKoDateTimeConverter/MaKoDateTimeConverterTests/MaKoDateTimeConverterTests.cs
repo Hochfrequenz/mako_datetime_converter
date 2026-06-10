@@ -258,6 +258,8 @@ public class MaKoDateTimeConverterTests
 
     [Test]
     [TestCase("2022-10-31T22:59:59Z", "2022-10-31T23:00:00Z")] // Berlin 23:59:59 + 1s = Berlin 00:00:00 Nov 1
+    [TestCase("2022-10-30T00:59:59Z", "2022-10-30T01:00:00Z")] // +1s crosses fall-back DST boundary (03:00 CEST → 02:00 CET at 01:00 UTC)
+    [TestCase("2023-03-26T00:59:59Z", "2023-03-26T01:00:00Z")] // +1s crosses spring-forward DST boundary (02:00 CET → 03:00 CEST at 01:00 UTC)
     public void Test_Strom_InclusiveEnd_To_ExclusiveEnd_1SecondResolution(
         string dateTimeString,
         string expectedResultString
