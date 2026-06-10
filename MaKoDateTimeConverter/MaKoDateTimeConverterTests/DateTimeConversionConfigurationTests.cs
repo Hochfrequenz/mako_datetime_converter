@@ -28,7 +28,7 @@ namespace MaKoDateTimeConverterTests
         [Test]
         [TestCase(
             "{\"source\":{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\":\"INCLUSIVE\"}, \"target\":{\"isGas\":false,\"isEndDate\": true, \"endDateTimeKind\":\"EXCLUSIVE\"}}",
-            false // was: true — now invalid because Source.Resolution is missing
+            false // was: true before v2.0.0; now invalid because Source.Resolution is missing
         )]
         [TestCase(
             "{\"source\":{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\":\"INCLUSIVE\", \"resolution\":\"P1D\"}, \"target\":{\"isGas\":false,\"isEndDate\": true, \"endDateTimeKind\":\"EXCLUSIVE\"}}",
