@@ -62,5 +62,33 @@ namespace MaKoDateTimeConverterTests
                 convertAction.Should().Throw<ArgumentException>();
             }
         }
+
+        [Test]
+        public void Test_GetInverted_Preserves_Resolution()
+        {
+            var original = new DateTimeConversionConfiguration
+            {
+                Source = new DateTimeConfiguration
+                {
+                    IsEndDate = true,
+                    EndDateTimeKind = EndDateTimeKind.Inclusive,
+                    Resolution = TimeSpan.FromSeconds(1),
+                    IsGas = false,
+                },
+                Target = new DateTimeConfiguration
+                {
+                    IsEndDate = true,
+                    EndDateTimeKind = EndDateTimeKind.Exclusive,
+                    IsGas = false,
+                },
+            };
+
+            var inverted = original.GetInverted();
+
+            inverted.Source.EndDateTimeKind.Should().Be(EndDateTimeKind.Exclusive);
+            inverted.Source.Resolution.Should().BeNull();
+            inverted.Target.EndDateTimeKind.Should().Be(EndDateTimeKind.Inclusive);
+            inverted.Target.Resolution.Should().Be(TimeSpan.FromSeconds(1));
+        }
     }
 }

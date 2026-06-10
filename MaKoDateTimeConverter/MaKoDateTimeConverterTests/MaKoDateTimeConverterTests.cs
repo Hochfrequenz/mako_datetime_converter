@@ -239,7 +239,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = false,
             },
             Target = new DateTimeConfiguration
@@ -254,6 +254,118 @@ public class MaKoDateTimeConverterTests
 
         var invertedConfig = conversion.GetInverted();
         expected.Convert(invertedConfig).Should().Be(dt);
+    }
+
+    [Test]
+    [TestCase("2022-10-31T22:59:59Z", "2022-10-31T23:00:00Z")] // Berlin 23:59:59 + 1s = Berlin 00:00:00 Nov 1
+    public void Test_Strom_InclusiveEnd_To_ExclusiveEnd_1SecondResolution(
+        string dateTimeString,
+        string expectedResultString
+    )
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromSeconds(1),
+                IsGas = false,
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Exclusive,
+                IsGas = false,
+            },
+        };
+        dt.Convert(conversion).Should().Be(expected);
+    }
+
+    [Test]
+    [TestCase("2022-10-31T22:59:59.999Z", "2022-10-31T23:00:00Z")] // Berlin 23:59:59.999 + 1ms = Berlin 00:00:00 Nov 1
+    public void Test_Strom_InclusiveEnd_To_ExclusiveEnd_1MsResolution(
+        string dateTimeString,
+        string expectedResultString
+    )
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromMilliseconds(1),
+                IsGas = false,
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Exclusive,
+                IsGas = false,
+            },
+        };
+        dt.Convert(conversion).Should().Be(expected);
+    }
+
+    [Test]
+    [TestCase("2022-10-31T23:00:00Z", "2022-10-31T22:59:59Z")] // Berlin 00:00:00 Nov 1 - 1s = Berlin 23:59:59 Oct 31
+    public void Test_Strom_ExclusiveEnd_To_InclusiveEnd_1SecondResolution(
+        string dateTimeString,
+        string expectedResultString
+    )
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Exclusive,
+                IsGas = false,
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromSeconds(1),
+                IsGas = false,
+            },
+        };
+        dt.Convert(conversion).Should().Be(expected);
+    }
+
+    [Test]
+    [TestCase("2022-10-31T23:00:00Z", "2022-10-31T22:59:59.999Z")] // Berlin 00:00:00 Nov 1 - 1ms = Berlin 23:59:59.999 Oct 31
+    public void Test_Strom_ExclusiveEnd_To_InclusiveEnd_1MsResolution(
+        string dateTimeString,
+        string expectedResultString
+    )
+    {
+        var dt = DateTimeOffset.Parse(dateTimeString).UtcDateTime;
+        var expected = DateTimeOffset.Parse(expectedResultString).UtcDateTime;
+        var conversion = new DateTimeConversionConfiguration
+        {
+            Source = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Exclusive,
+                IsGas = false,
+            },
+            Target = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromMilliseconds(1),
+                IsGas = false,
+            },
+        };
+        dt.Convert(conversion).Should().Be(expected);
     }
 
     [TestCase("2023-05-30T04:00:00Z", "2023-05-31T04:00:00Z")]
@@ -272,7 +384,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = true,
                 IsGasTagAware = true,
             },
@@ -307,7 +419,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = true,
                 IsGasTagAware = false,
             },
@@ -337,14 +449,14 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = false,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = false,
             },
         };
@@ -410,7 +522,7 @@ public class MaKoDateTimeConverterTests
                 IsGas = false,
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
-                Resolution = TimeSpan.FromDays(1), // ADD THIS
+                Resolution = TimeSpan.FromDays(1),
             },
         };
         Action conversionOfUnspecifiedDateTime = () =>
