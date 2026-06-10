@@ -6,7 +6,7 @@ using System.Xml;
 namespace MaKoDateTimeConverter;
 
 /// <summary>
-/// Serializes and deserializes <see cref="TimeSpan?"/> as an ISO 8601 duration string
+/// Serializes and deserializes <see cref="Nullable{T}">TimeSpan?</see> as an ISO 8601 duration string
 /// (e.g. <c>"PT1S"</c> for 1 second, <c>"P1D"</c> for 1 day, <c>"PT0.001S"</c> for 1 millisecond).
 /// Uses <see cref="System.Xml.XmlConvert"/> for formatting and parsing.
 /// See https://en.wikipedia.org/wiki/ISO_8601#Durations for the duration format specification.
