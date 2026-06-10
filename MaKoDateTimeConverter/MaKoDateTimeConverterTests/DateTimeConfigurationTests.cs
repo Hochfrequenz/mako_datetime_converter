@@ -28,12 +28,27 @@ namespace MaKoDateTimeConverterTests
             true
         )]
         // New cases for Resolution validation:
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\"}", false)] // inclusive, no resolution
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}", true)] // inclusive with 1s
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\", \"resolution\": \"PT1S\"}", false)] // exclusive must not have resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\"}",
+            false
+        )] // inclusive, no resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}",
+            true
+        )] // inclusive with 1s
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\", \"resolution\": \"PT1S\"}",
+            false
+        )] // exclusive must not have resolution
         [TestCase("{\"isGas\":false, \"isEndDate\": false, \"resolution\": \"PT1S\"}", false)] // non-end-date must not have resolution
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"-PT1S\"}", false)] // negative resolution
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT0S\"}", false)] // zero resolution is invalid
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"-PT1S\"}",
+            false
+        )] // negative resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT0S\"}",
+            false
+        )] // zero resolution is invalid
         public void Test_Validation(string dateTimeConfigJson, bool isValid)
         {
             var dateTimeConfig = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(
@@ -48,9 +63,18 @@ namespace MaKoDateTimeConverterTests
         }
 
         [Test]
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}", "00:00:01")]
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"P1D\"}", "1.00:00:00")]
-        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\"}", null)]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}",
+            "00:00:01"
+        )]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"P1D\"}",
+            "1.00:00:00"
+        )]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\"}",
+            null
+        )]
         public void Test_Resolution_Deserialization(string json, string? expectedResolutionString)
         {
             var config = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(json);
@@ -77,7 +101,9 @@ namespace MaKoDateTimeConverterTests
             };
             var json = System.Text.Json.JsonSerializer.Serialize(config);
             json.Should().Contain("\"resolution\":"); // key is present in JSON
-            var deserialized = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(json);
+            var deserialized = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(
+                json
+            );
             deserialized!.Resolution.Should().Be(expected); // round-trip equality is what matters
         }
     }

@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MaKoDateTimeConverter</name>
+    </assembly>
+    <members>
+        <member name="T:MaKoDateTimeConverter.DateTimeConfiguration">
+            <summary>
+            Describes how a datetime is meant by a system.
+            Two of these configurations allow to convert a datetime smoothly.
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.IsEndDate">
+            <summary>
+            true if the the datetime describes an "end date", e.g. a contract end date
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.EndDateTimeKind">
+            <summary>
+            <see cref="P:MaKoDateTimeConverter.DateTimeConfiguration.EndDateTimeKind"/>
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.Resolution">
+            <summary>
+            The smallest representable time unit in this system's end-date field.
+            Must be set if and only if <see cref="P:MaKoDateTimeConverter.DateTimeConfiguration.EndDateTimeKind"/> is <see cref="F:MaKoDateTimeConverter.EndDateTimeKind.Inclusive"/>.
+            Adding one resolution unit to an inclusive end yields the equivalent exclusive end.
+            Typical values: TimeSpan.FromDays(1), TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(1).
+            Must be positive (greater than TimeSpan.Zero).
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.IsGas">
+            <summary>
+            true iff the datetime describes a datetime in Sparte Gas
+            </summary>
+            <remarks>
+            Please note that this is independent from the information whether the datetime is actually <see cref="P:MaKoDateTimeConverter.DateTimeConfiguration.IsGasTagAware"/>!
+            There are systems that discriminate Gas and non-Gas (this is what this flag is for) but are still unaware of the German Gas-Tag.
+            </remarks>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.IsGasTagAware">
+            <summary>
+            true iff <see cref="P:MaKoDateTimeConverter.DateTimeConfiguration.IsGas"/> is true and the date time is aware of the German "Gas-Tag" (meaning that start dates are 6:00 German local time and end dates are 06:00 German local time (if the end date is meant exclusive))
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.StripTime">
+            <summary>
+            Set true to remove all hours, minutes, seconds, milliseconds from the respective DateTime.
+            If set in the <see cref="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Source"/> the hours, minutes... will be stripped _before_ the conversion.
+            If set in the <see cref="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Target"/> the hours, minutes... will be stripped _after_ the conversion.
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConfiguration.IsValid">
+            <summary>
+            true iff the configuration is valid (self-consistent).
+            </summary>
+            <remarks>This basically checks if the nullable properties are not null under certain requirements</remarks>
+        </member>
+        <member name="T:MaKoDateTimeConverter.DateTimeConversionConfiguration">
+            <summary>
+            A date time conversion configuration describes which steps are necessary to convert a datetime from a source to a target
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Source">
+            <summary>
+            The configuration of the datetime before the conversion
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Target">
+            <summary>
+            The configuration of the datetime before the conversion
+            </summary>
+        </member>
+        <member name="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.IsValid">
+            <summary>
+            true iff the configuration is valid
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.DateTimeConversionConfiguration.GetInverted">
+            <summary>
+            returns a new configuration that has switched <see cref="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Target"/> and <see cref="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Source"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MaKoDateTimeConverter.EndDateTimeKind">
+            <summary>
+            Describes how an end datetime shall be understood
+            </summary>
+        </member>
+        <member name="F:MaKoDateTimeConverter.EndDateTimeKind.Inclusive">
+            <summary>
+            The end date shall be understood as inclusive end date
+            </summary>
+            <example>"2022-10-31" for end of October</example>
+        </member>
+        <member name="F:MaKoDateTimeConverter.EndDateTimeKind.Exclusive">
+            <summary>
+            The end date shall be understood as exclusive end date
+            </summary>
+            <example>"2022-11-01" for end of October</example>
+        </member>
+        <member name="T:MaKoDateTimeConverter.MaKoDateTimeConverter">
+            <summary>
+            a converter that takes a datetime and converts it to another datetime, according to its configuration
+            </summary>
+        </member>
+        <member name="F:MaKoDateTimeConverter.MaKoDateTimeConverter.BerlinTimeSerialized">
+            <summary>
+            the Berlin time zone as serialized string
+            </summary>
+            <remarks>Created using <see cref="M:System.TimeZoneInfo.ToSerializedString"/></remarks>
+        </member>
+        <member name="F:MaKoDateTimeConverter.MaKoDateTimeConverter.BerlinTime">
+            <summary>
+            the timezone in Germany
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.#cctor">
+            <summary>
+            a static constructor to initialize <see cref="F:MaKoDateTimeConverter.MaKoDateTimeConverter.BerlinTime"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(System.DateTime)">
+            <summary>
+            check if this is the begin of a German stromtag
+            </summary>
+            <param name="dt"></param>
+            <returns>returns true iff the given datetime is midnight in Germany</returns>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(System.Nullable{System.DateTime})">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(System.DateTimeOffset)">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGermanMidnight(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.Convert6AamToMidnight(System.DateTime)">
+            <summary>
+            Converts a German 6AM to German midnight of the same German day
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">if the input is not utc or not 6am</exception>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.ConvertMidnightTo6Am(System.DateTime)">
+            <summary>
+            Converts a German midnight to 6Am of the same German day
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">if the input is not utc or not midnight</exception>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.AddGermanDay(System.DateTime)">
+            <summary>
+            Adds 1 German day
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">if the input is not utc</exception>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.SubtractGermanDay(System.DateTime)">
+            <summary>
+            Subtracts 1 German day
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException">if the input is not utc</exception>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.StripTime(System.DateTime)">
+            <summary>
+            remove all hours, minutes, seconds, milliseconds (in german local time) from the given <paramref name="dt"/>.
+            This is similar to a "round down" or "floor" in German local time.
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.StripTime(System.DateTimeOffset)">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.StripTime(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTime)">
+            <summary>
+            check if this is the begin of a German Gastag
+            </summary>
+            <param name="dt"></param>
+            <returns>returns true iff the given datetime is 06:00am in Germany</returns>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.Nullable{System.DateTime})">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTimeOffset)">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTime)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            <inheritdoc cref="M:MaKoDateTimeConverter.MaKoDateTimeConverter.IsGerman6Am(System.DateTimeOffset)"/>
+            </summary>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(System.DateTime,MaKoDateTimeConverter.DateTimeConversionConfiguration)">
+            <summary>
+            converts the given <paramref name="sourceDateTime"/> to a target by applying all transformations which are derived from the given <paramref name="conversionConfiguration"/> where <paramref name="sourceDateTime"/> is described by <see cref="P:MaKoDateTimeConverter.DateTimeConversionConfiguration.Source"/>
+            </summary>
+            <param name="sourceDateTime">the source date time (input value of the conversion)</param>
+            <param name="conversionConfiguration">describes the steps necessary to convert the given <paramref name="sourceDateTime"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:MaKoDateTimeConverter.MaKoDateTimeConverter.Convert(System.DateTimeOffset,MaKoDateTimeConverter.DateTimeConversionConfiguration)">
+            <summary>
+            <inheritdoc cref="T:System.Convert"/>
+            </summary>
+            <param name="sourceDateTime"></param>
+            <param name="conversionConfiguration"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

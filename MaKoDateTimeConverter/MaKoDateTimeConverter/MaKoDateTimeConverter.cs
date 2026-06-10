@@ -320,16 +320,18 @@ public static class MaKoDateTimeConverter
             if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Inclusive) // target is exclusive
             {
                 var resolution = conversionConfiguration.Source.Resolution!.Value;
-                result = resolution == TimeSpan.FromDays(1)
-                    ? AddGermanDay(result.UtcDateTime)
-                    : result.UtcDateTime + resolution;
+                result =
+                    resolution == TimeSpan.FromDays(1)
+                        ? AddGermanDay(result.UtcDateTime)
+                        : result.UtcDateTime + resolution;
             }
             else if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Exclusive) // target is inclusive
             {
                 var resolution = conversionConfiguration.Target.Resolution!.Value;
-                result = resolution == TimeSpan.FromDays(1)
-                    ? SubtractGermanDay(result.UtcDateTime)
-                    : result.UtcDateTime - resolution;
+                result =
+                    resolution == TimeSpan.FromDays(1)
+                        ? SubtractGermanDay(result.UtcDateTime)
+                        : result.UtcDateTime - resolution;
             }
         }
 

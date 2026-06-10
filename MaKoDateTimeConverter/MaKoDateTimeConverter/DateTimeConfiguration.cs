@@ -66,11 +66,14 @@ public record DateTimeConfiguration
             || (
                 IsEndDate
                 && EndDateTimeKind.HasValue
-                && (EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Inclusive
-                    || (Resolution.HasValue && Resolution.Value > TimeSpan.Zero))
-                && (EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Exclusive
-                    || !Resolution.HasValue)
+                && (
+                    EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Inclusive
+                    || (Resolution.HasValue && Resolution.Value > TimeSpan.Zero)
+                )
+                && (
+                    EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Exclusive
+                    || !Resolution.HasValue
+                )
             )
-        )
-        && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
+        ) && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
 }
