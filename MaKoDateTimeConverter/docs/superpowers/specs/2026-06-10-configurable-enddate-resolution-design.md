@@ -40,7 +40,7 @@ This is modelled directly after [chronomeleon's `ChronoAssumption.resolution`](h
 public TimeSpan? Resolution { get; set; }
 ```
 
-`System.Text.Json` has no built-in `TimeSpan` converter (net8/net9/net10). A `TimeSpanJsonConverter` must be added to the library. It serialises using `TimeSpan.ToString("c")` / `TimeSpan.ParseExact(s, "c", CultureInfo.InvariantCulture)`, producing human-readable strings such as `"00:00:01"` (1 second), `"00:00:00.0010000"` (1 ms), `"1.00:00:00"` (1 day). This converter must be applied to `TimeSpan?` (nullable) as well.
+`System.Text.Json` has no built-in `TimeSpan` converter (net8/net9/net10). A `TimeSpanJsonConverter` must be added to the library. It must use **ISO 8601 duration format** via `System.Xml.XmlConvert.ToString(TimeSpan)` for serialisation and `System.Xml.XmlConvert.ToTimeSpan(string)` for deserialisation — no external package required. This produces standard duration strings such as `"PT1S"` (1 second), `"PT0.001S"` (1 ms), `"P1D"` (1 day). This converter must handle `TimeSpan?` (nullable) as well.
 
 This is consistent with the existing `JsonStringEnumConverter` pattern already in use for `EndDateTimeKind`.
 
@@ -126,10 +126,10 @@ New `[TestCase]` rows in the existing `Test_Validation` test:
 | JSON snippet | `isValid` | Reason |
 |---|---|---|
 | `isEndDate:true, endDateTimeKind:INCLUSIVE` (no resolution) | `false` | Inclusive without resolution |
-| `isEndDate:true, endDateTimeKind:INCLUSIVE, resolution:"00:00:01"` | `true` | Inclusive with 1s resolution |
-| `isEndDate:true, endDateTimeKind:EXCLUSIVE, resolution:"00:00:01"` | `false` | Exclusive must not have resolution |
-| `isEndDate:false, resolution:"00:00:01"` | `false` | Non-end-date must not have resolution |
-| `isEndDate:true, endDateTimeKind:INCLUSIVE, resolution:"-00:00:01"` | `false` | Resolution must be positive |
+| `isEndDate:true, endDateTimeKind:INCLUSIVE, resolution:"PT1S"` | `true` | Inclusive with 1s resolution |
+| `isEndDate:true, endDateTimeKind:EXCLUSIVE, resolution:"PT1S"` | `false` | Exclusive must not have resolution |
+| `isEndDate:false, resolution:"PT1S"` | `false` | Non-end-date must not have resolution |
+| `isEndDate:true, endDateTimeKind:INCLUSIVE, resolution:"-PT1S"` | `false` | Resolution must be positive |
 
 ### 3b. Conversion — sub-day resolutions
 
@@ -182,7 +182,7 @@ Every existing test that constructs a `DateTimeConfiguration` with `EndDateTimeK
 | `MaKoDateTimeConverterTests.cs` | `Test_Identity` | Add `Resolution = TimeSpan.FromDays(1)` to both `Source` and `Target` |
 | `MaKoDateTimeConverterTests.cs` | `DateTime_With_Unspecified_Kind_Shall_Raise_ArgumentException` | Add `Resolution = TimeSpan.FromDays(1)` to `Target` |
 | `MinimalWorkingExample.cs` | `Test_Mwe` | Add `Resolution = TimeSpan.FromDays(1)` to `Target` |
-| `DateTimeConversionConfigurationTests.cs` | `Test_Validation` (INCLUSIVE JSON case, currently `isValid:true`) | The existing case (`INCLUSIVE` source, no resolution) now validates to `false`. Keep it as the `false` case. Add a new row with `"resolution":"1.00:00:00"` on the source to cover the valid `true` case. |
+| `DateTimeConversionConfigurationTests.cs` | `Test_Validation` (INCLUSIVE JSON case, currently `isValid:true`) | The existing case (`INCLUSIVE` source, no resolution) now validates to `false`. Keep it as the `false` case. Add a new row with `"resolution":"P1D"` on the source to cover the valid `true` case. |
 
 ---
 
