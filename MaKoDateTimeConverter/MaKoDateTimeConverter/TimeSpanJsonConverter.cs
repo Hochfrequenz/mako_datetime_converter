@@ -17,7 +17,24 @@ internal sealed class TimeSpanJsonConverter : JsonConverter<TimeSpan?>
     {
         if (reader.TokenType == JsonTokenType.Null)
             return null;
-        return XmlConvert.ToTimeSpan(reader.GetString()!);
+        if (reader.TokenType != JsonTokenType.String)
+            throw new JsonException(
+                $"Expected a JSON string for a TimeSpan value, got {reader.TokenType}."
+            );
+        var raw = reader.GetString();
+        if (string.IsNullOrEmpty(raw))
+            throw new JsonException("Cannot parse an empty or null string as a TimeSpan.");
+        try
+        {
+            return XmlConvert.ToTimeSpan(raw);
+        }
+        catch (FormatException ex)
+        {
+            throw new JsonException(
+                $"The value '{raw}' is not a valid ISO 8601 duration (e.g. \"PT1S\", \"P1D\", \"PT0.001S\").",
+                ex
+            );
+        }
     }
 
     public override void Write(
