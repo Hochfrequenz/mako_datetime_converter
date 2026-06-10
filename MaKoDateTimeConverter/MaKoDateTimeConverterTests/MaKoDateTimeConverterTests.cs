@@ -224,6 +224,8 @@ public class MaKoDateTimeConverterTests
     [TestCase("2023-05-31T22:00:00Z", "2023-06-01T22:00:00Z")]
     [TestCase("2023-12-31T23:00:00Z", "2024-01-01T23:00:00Z")]
     [TestCase("2023-12-01T23:00:00Z", "2023-12-02T23:00:00Z")]
+    [TestCase("2023-03-25T23:00:00Z", "2023-03-26T22:00:00Z")] // spring-forward DST: 23h gap
+    [TestCase("2023-10-28T22:00:00Z", "2023-10-29T23:00:00Z")] // fall-back DST: 25h gap
     public void Test_Strom_InclusiveEnd_To_ExclusiveEnd(
         string dateTimeString,
         string expectedResultString
@@ -237,6 +239,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
                 IsGas = false,
             },
             Target = new DateTimeConfiguration
@@ -269,6 +272,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
                 IsGas = true,
                 IsGasTagAware = true,
             },
@@ -303,6 +307,7 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
                 IsGas = true,
                 IsGasTagAware = false,
             },
@@ -332,12 +337,14 @@ public class MaKoDateTimeConverterTests
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
                 IsGas = false,
             },
             Target = new DateTimeConfiguration
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
                 IsGas = false,
             },
         };
@@ -403,6 +410,7 @@ public class MaKoDateTimeConverterTests
                 IsGas = false,
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1), // ADD THIS
             },
         };
         Action conversionOfUnspecifiedDateTime = () =>
