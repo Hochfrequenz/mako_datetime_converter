@@ -1,3 +1,4 @@
+using System;
 using AwesomeAssertions;
 using MaKoDateTimeConverter;
 using NUnit.Framework;
@@ -26,6 +27,28 @@ namespace MaKoDateTimeConverterTests
             "{\"isGas\":true, \"isGasTagAware\": true, \"isEndDate\": true, \"endDateTimeKind\":\"EXCLUSIVE\"}",
             true
         )]
+        // New cases for Resolution validation:
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\"}",
+            false
+        )] // inclusive, no resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}",
+            true
+        )] // inclusive with 1s
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\", \"resolution\": \"PT1S\"}",
+            false
+        )] // exclusive must not have resolution
+        [TestCase("{\"isGas\":false, \"isEndDate\": false, \"resolution\": \"PT1S\"}", false)] // non-end-date must not have resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"-PT1S\"}",
+            false
+        )] // negative resolution
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT0S\"}",
+            false
+        )] // zero resolution is invalid
         public void Test_Validation(string dateTimeConfigJson, bool isValid)
         {
             var dateTimeConfig = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(
@@ -37,6 +60,58 @@ namespace MaKoDateTimeConverterTests
                 .And.Subject.As<DateTimeConfiguration>()
                 .IsValid.Should()
                 .Be(isValid);
+        }
+
+        [Test]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}",
+            "00:00:01"
+        )]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"P1D\"}",
+            "1.00:00:00"
+        )]
+        [TestCase(
+            "{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\"}",
+            null
+        )]
+        public void Test_Resolution_Deserialization(string json, string? expectedResolutionString)
+        {
+            var config = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(json);
+            config.Should().NotBeNull();
+            if (expectedResolutionString is null)
+                config!.Resolution.Should().BeNull();
+            else
+                config!
+                    .Resolution.Should()
+                    .Be(
+                        TimeSpan.Parse(
+                            expectedResolutionString,
+                            System.Globalization.CultureInfo.InvariantCulture
+                        )
+                    );
+        }
+
+        [Test]
+        [TestCase("PT1S")]
+        [TestCase("P1D")]
+        [TestCase("PT0.001S")]
+        public void Test_Resolution_Serialization_RoundTrip(string iso8601Duration)
+        {
+            var expected = System.Xml.XmlConvert.ToTimeSpan(iso8601Duration);
+            var config = new DateTimeConfiguration
+            {
+                IsEndDate = true,
+                EndDateTimeKind = EndDateTimeKind.Inclusive,
+                IsGas = false,
+                Resolution = expected,
+            };
+            var json = System.Text.Json.JsonSerializer.Serialize(config);
+            json.Should().Contain("\"resolution\":"); // key is present in JSON
+            var deserialized = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(
+                json
+            );
+            deserialized!.Resolution.Should().Be(expected); // round-trip equality is what matters
         }
     }
 }

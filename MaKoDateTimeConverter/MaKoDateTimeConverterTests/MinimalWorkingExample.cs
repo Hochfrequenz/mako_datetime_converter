@@ -35,6 +35,7 @@ public class MinimalWorkingExample
             {
                 IsEndDate = true,
                 EndDateTimeKind = EndDateTimeKind.Inclusive,
+                Resolution = TimeSpan.FromDays(1),
                 IsGas = true,
                 IsGasTagAware = false,
             },

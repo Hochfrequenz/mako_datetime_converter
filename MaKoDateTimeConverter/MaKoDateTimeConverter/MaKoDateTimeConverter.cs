@@ -317,16 +317,21 @@ public static class MaKoDateTimeConverter
                 != conversionConfiguration.Target.EndDateTimeKind!.Value
         )
         {
-            if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Inclusive) // implicit: target is exclusive
+            if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Inclusive) // target is exclusive
             {
-                // convert from inclusive to exclusive
-                result = AddGermanDay(result.UtcDateTime);
+                var resolution = conversionConfiguration.Source.Resolution!.Value;
+                result =
+                    resolution == TimeSpan.FromDays(1)
+                        ? AddGermanDay(result.UtcDateTime)
+                        : result.UtcDateTime + resolution;
             }
-
-            if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Exclusive) // implicit: target is inclusive
+            else if (conversionConfiguration.Source.EndDateTimeKind == EndDateTimeKind.Exclusive) // target is inclusive
             {
-                // convert from exclusive to inclusive
-                result = SubtractGermanDay(result.UtcDateTime);
+                var resolution = conversionConfiguration.Target.Resolution!.Value;
+                result =
+                    resolution == TimeSpan.FromDays(1)
+                        ? SubtractGermanDay(result.UtcDateTime)
+                        : result.UtcDateTime - resolution;
             }
         }
 

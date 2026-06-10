@@ -1,3 +1,5 @@
+using System;
+
 namespace MaKoDateTimeConverter;
 
 /// <summary>
@@ -17,6 +19,18 @@ public record DateTimeConfiguration
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("endDateTimeKind")]
     public EndDateTimeKind? EndDateTimeKind { get; set; }
+
+    /// <summary>
+    /// The smallest representable time unit in this system's end-date field.
+    /// Must be set if and only if <see cref="EndDateTimeKind"/> is <see cref="EndDateTimeKind.Inclusive"/>.
+    /// Adding one resolution unit to an inclusive end yields the equivalent exclusive end.
+    /// For example, adding a Resolution = 1s to an inclusive end 2026-03-31T23:59:59Z leads the respective exclusive end 2026-04-01T00:00:00Z.
+    /// Typical values: TimeSpan.FromDays(1), TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(1).
+    /// Must be positive (greater than TimeSpan.Zero).
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("resolution")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(TimeSpanJsonConverter))]
+    public TimeSpan? Resolution { get; set; }
 
     /// <summary>
     /// true iff the datetime describes a datetime in Sparte Gas
@@ -49,7 +63,18 @@ public record DateTimeConfiguration
     [System.Text.Json.Serialization.JsonIgnore]
     public bool IsValid =>
         (
-            (IsEndDate == false && !EndDateTimeKind.HasValue)
-            || (IsEndDate && EndDateTimeKind.HasValue)
+            (IsEndDate == false && !EndDateTimeKind.HasValue && !Resolution.HasValue)
+            || (
+                IsEndDate
+                && EndDateTimeKind.HasValue
+                && (
+                    EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Inclusive
+                    || (Resolution.HasValue && Resolution.Value > TimeSpan.Zero)
+                )
+                && (
+                    EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Exclusive
+                    || !Resolution.HasValue
+                )
+            )
         ) && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
 }
