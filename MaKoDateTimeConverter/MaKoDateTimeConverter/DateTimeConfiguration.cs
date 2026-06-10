@@ -1,3 +1,5 @@
+using System;
+
 namespace MaKoDateTimeConverter;
 
 /// <summary>
@@ -17,6 +19,17 @@ public record DateTimeConfiguration
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("endDateTimeKind")]
     public EndDateTimeKind? EndDateTimeKind { get; set; }
+
+    /// <summary>
+    /// The smallest representable time unit in this system's end-date field.
+    /// Must be set if and only if <see cref="EndDateTimeKind"/> is <see cref="EndDateTimeKind.Inclusive"/>.
+    /// Adding one resolution unit to an inclusive end yields the equivalent exclusive end.
+    /// Typical values: TimeSpan.FromDays(1), TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(1).
+    /// Must be positive (greater than TimeSpan.Zero).
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("resolution")]
+    [System.Text.Json.Serialization.JsonConverter(typeof(TimeSpanJsonConverter))]
+    public TimeSpan? Resolution { get; set; }
 
     /// <summary>
     /// true iff the datetime describes a datetime in Sparte Gas
