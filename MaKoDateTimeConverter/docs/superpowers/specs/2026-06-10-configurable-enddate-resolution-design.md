@@ -182,8 +182,7 @@ Every existing test that constructs a `DateTimeConfiguration` with `EndDateTimeK
 | `MaKoDateTimeConverterTests.cs` | `Test_Identity` | Add `Resolution = TimeSpan.FromDays(1)` to both `Source` and `Target` |
 | `MaKoDateTimeConverterTests.cs` | `DateTime_With_Unspecified_Kind_Shall_Raise_ArgumentException` | Add `Resolution = TimeSpan.FromDays(1)` to `Target` |
 | `MinimalWorkingExample.cs` | `Test_Mwe` | Add `Resolution = TimeSpan.FromDays(1)` to `Target` |
-| `DateTimeConversionConfigurationTests.cs` | `Test_Validation` (INCLUSIVE JSON case) | Add `"resolution":"1.00:00:00"` to the source JSON, or split into two cases: one valid (with resolution) and one invalid (without) |
-| `DateTimeConversionConfigurationTests.cs` | `Test_Deserialization` | Add `"resolution":"1.00:00:00"` to the source object in the JSON fixture (source has `endDateTimeKind:INCLUSIVE`) |
+| `DateTimeConversionConfigurationTests.cs` | `Test_Validation` (INCLUSIVE JSON case, currently `isValid:true`) | The existing case (`INCLUSIVE` source, no resolution) now validates to `false`. Keep it as the `false` case. Add a new row with `"resolution":"1.00:00:00"` on the source to cover the valid `true` case. |
 
 ---
 
