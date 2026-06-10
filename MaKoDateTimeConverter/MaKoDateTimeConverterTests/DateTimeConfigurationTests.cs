@@ -27,6 +27,12 @@ namespace MaKoDateTimeConverterTests
             "{\"isGas\":true, \"isGasTagAware\": true, \"isEndDate\": true, \"endDateTimeKind\":\"EXCLUSIVE\"}",
             true
         )]
+        // New cases for Resolution validation:
+        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\"}", false)] // inclusive, no resolution
+        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"PT1S\"}", true)] // inclusive with 1s
+        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"EXCLUSIVE\", \"resolution\": \"PT1S\"}", false)] // exclusive must not have resolution
+        [TestCase("{\"isGas\":false, \"isEndDate\": false, \"resolution\": \"PT1S\"}", false)] // non-end-date must not have resolution
+        [TestCase("{\"isGas\":false, \"isEndDate\": true, \"endDateTimeKind\": \"INCLUSIVE\", \"resolution\": \"-PT1S\"}", false)] // negative resolution
         public void Test_Validation(string dateTimeConfigJson, bool isValid)
         {
             var dateTimeConfig = System.Text.Json.JsonSerializer.Deserialize<DateTimeConfiguration>(

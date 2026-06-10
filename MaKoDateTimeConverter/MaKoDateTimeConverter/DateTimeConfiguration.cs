@@ -62,7 +62,15 @@ public record DateTimeConfiguration
     [System.Text.Json.Serialization.JsonIgnore]
     public bool IsValid =>
         (
-            (IsEndDate == false && !EndDateTimeKind.HasValue)
-            || (IsEndDate && EndDateTimeKind.HasValue)
-        ) && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
+            (IsEndDate == false && !EndDateTimeKind.HasValue && !Resolution.HasValue)
+            || (
+                IsEndDate
+                && EndDateTimeKind.HasValue
+                && (EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Inclusive
+                    || (Resolution.HasValue && Resolution.Value > TimeSpan.Zero))
+                && (EndDateTimeKind != global::MaKoDateTimeConverter.EndDateTimeKind.Exclusive
+                    || !Resolution.HasValue)
+            )
+        )
+        && ((IsGas == false && !IsGasTagAware.HasValue) || (IsGas && IsGasTagAware.HasValue));
 }
