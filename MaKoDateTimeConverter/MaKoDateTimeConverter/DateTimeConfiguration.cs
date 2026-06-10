@@ -24,6 +24,7 @@ public record DateTimeConfiguration
     /// The smallest representable time unit in this system's end-date field.
     /// Must be set if and only if <see cref="EndDateTimeKind"/> is <see cref="EndDateTimeKind.Inclusive"/>.
     /// Adding one resolution unit to an inclusive end yields the equivalent exclusive end.
+    /// For example, adding a Resolution = 1s to an inclusive end 2026-03-31T23:59:59Z leads the respective exclusive end 2026-04-01T00:00:00Z.
     /// Typical values: TimeSpan.FromDays(1), TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(1).
     /// Must be positive (greater than TimeSpan.Zero).
     /// </summary>
